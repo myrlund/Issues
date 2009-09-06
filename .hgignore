@@ -1,3 +1,4 @@
 syntax: glob
 
+src/economy/settings.py
 *.pyc
