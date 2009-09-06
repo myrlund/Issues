@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block right %}
+	<p>{{ project.title }} ({{ project.tax_rate }}% MVA)</p>
+	{# <form action="/"> #}
+	{# 		<select name="mode" onchange="$(this).parents('form').submit()"> #}
+	{# 			<option value="change" selected="selected">Endringer</option> #}
+	{# 			<option value="planned">Fakturaer</option> #}
+	{# 		</select> #}
+	{# 		<input type="submit" class="button" value="Vis" /> #}
+	{# 	</form> #}
+{% endblock %}
+
+{% block contents %}
+	{% regroup project.contracts by category as contract_categories %}
+	<table class="overview">
+		<thead>
+			
+		</thead>
+		{% for cat in contract_categories %}
+			{% if cat.list|length %}
+				<tbody>
+					<tr>
+						<th colspan="6">{{ cat.grouper }}</th>
+					</tr>
+					{% for contract in cat.list %}
+						<tr>
+							<td>{{ contract.code }}</td>
+							<td>{{ contract.company }}</td>
+							<td>{{ contract.amount }}</td>
+							<td>{{ contract.budget }}</td>
+							<td>{{ contract.comment }}</td>
+							<td>REDIGER</td>
+						</tr>
+					{% endfor %}
+				</tbody>		
+			{% endif %}
+		{% endfor %}
+		
+	</table>
+{% endblock %}
+
+
