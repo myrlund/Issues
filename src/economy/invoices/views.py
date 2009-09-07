@@ -17,7 +17,7 @@ def render_project_response(template, project_id, vars={}, request=None):
     render_to_response("invoices/"+template, vars+{"project": project}, RequestContext(request))
 
 def overview(request, project_id):
-    return render_project_response("overview.html", project_id, {"project": project}, request)
+    return render_project_response("overview.html", project_id, {}, request)
 
 def form(request, project_id, model, id=None, parent_field=None, parent_id=None):
     if id:
