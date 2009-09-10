@@ -1,0 +1,40 @@
+
+<ul class="tabs">
+	
+	<li class="tab changes">
+		{% if contract.invoices %}
+			<table class="invoices grid">
+				{% include "invoice/table_headers.html" %}
+				{% for invoice in contract.invoices %}
+					<tr>
+						<td class="number">{{ invoice.invoice_number }}</td>
+						<td class="date">{{ invoice.invoice_date }}</td>
+						<td>{{ invoice.description }}</td>
+						<td>{{ invoice.comment }}</td>
+						<td class="number">{{ invoice.amount }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% else %}
+			<div class="inner">
+				<p>Ingen fakturaer registrert. <a href="{{ contract.get_absolute_url }}invoice/new/">Registrer ny faktura.</a></p>
+			</div>
+		{% endif %}
+	</li>
+	
+	<li class="tab changes">
+		{% if contract.changes %}
+			<table class="invoices grid">
+				{% include "change/table_headers.html" %}
+				{% for change in contract.changes %}
+					{% include "change/row.html" %}
+				{% endfor %}
+			</table>
+		{% else %}
+			<div class="inner">
+				<p>Ingen endringer registrert. <a href="{{ contract.get_absolute_url }}change/new/">Registrer ny endring.</a></p>
+			</div>
+		{% endif %}
+	</li>
+	
+</ul>

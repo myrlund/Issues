@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.PATH_STATIC}),
     
-    (r'^(?P<project_id>\d+)/', include('economy.invoices.urls')),
-    (r'^ajax/(?P<project_id>\d+)/', include('economy.invoices.urls'), {'ajax': True}),
+    (r'^(?P<project_id>\d+)/', include('economy.contract.urls')),
+#    (r'^ajax/(?P<project_id>\d+)/', include('economy.invoices.urls'), {'ajax': True}),
     
 )

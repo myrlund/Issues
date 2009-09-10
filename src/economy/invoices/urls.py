@@ -7,6 +7,9 @@ urlpatterns = patterns('economy.invoices.views',
     (r'^invoices/$', 'show_invoices'),
     (r'^changes/$', 'show_changes'),
     
-    (r'^contract/new/$', 'form',
-        {'model': Contract, 'parent_field': 'project_id', 'parent_id': True}),
+#    (r'^contract/new/$', 'contract_form'),
+#    (r'^contract/edit/(?P<contract_code>.+)/$', 'contract_form'),
+#    (r'^contract/(?P<contract_code>.+)/$', 'show_contract'),
+    
+#    (r'^contract/(?P<contract_code>.+)/$', 'show_contract'),
 )

@@ -1,55 +1,16 @@
-# -*- coding: utf8 -*-
+# # -*- coding: utf8 -*-
 
 from django.db import models
+from django.db.models import Q, F
+from django.db.models.signals import pre_save, post_save 
+from django.forms.models import ModelForm
+from django import forms
 
-class Project(models.Model):
-    id = models.PositiveIntegerField("prosjektnummer", primary_key=True)
-    title = models.CharField("tittel", max_length=70, blank=True, default="Uten navn")
-    tax_rate = models.DecimalField(u"MVA-nivå", max_digits=4, blank=True, decimal_places=2, default="25.0", help_text="Oppgi i prosent") # 00.00-99.99 in percent
-    
-    def contracts(self, category=None):
-        if category:
-            return self.contract_set.filter(category=category)
-        else:
-            return self.contract_set.all()
-    
-    def contract_categories(self):
-        return ContractCategory.objects.all()
-    
-    def __unicode__(self):
-        return self.title
-    
-    class Meta:
-        ordering = ["title"]
-
-class ContractCategory(models.Model):
-    title = models.CharField(max_length=50)
-    weight = models.IntegerField(default=0)
-    
-    def __unicode__(self):
-        return self.title
-    
-    class Meta:
-        ordering = ["weight"]
-
-class Contract(models.Model):
-    project = models.ForeignKey(Project)
-    category = models.ForeignKey(ContractCategory)
-    code = models.CharField(max_length=15)
-    company = models.CharField(max_length=70, blank=True)
-    budget = models.PositiveIntegerField(default=0)
-    amount = models.PositiveIntegerField(default=0)
-    comment = models.TextField(blank=True)
-    
-    def __unicode__(self):
-        return self.code
-    
-    class Meta:
-        unique_together = ("project", "code")
-        ordering = ["code"]
+#from economy.contract.models import Contract
+from economy.contract.helpers import render_project_response
 
 class Invoice(models.Model):
-    contract = models.ForeignKey(Contract)
+    contract = models.ForeignKey("contract.Contract")
     invoice_number = models.PositiveIntegerField()
     invoice_date = models.DateField()
     description = models.TextField(blank=True)
@@ -59,11 +20,24 @@ class Invoice(models.Model):
     def __unicode__(self):
         return u"%s%d" % (self.contract.code, self.invoice_number)
     
+    @staticmethod
+    def sum(invoices):
+        amount = 0
+        for invoice in invoices:
+            amount += invoice.amount
+        return {"amount": amount}
+    
     def project(self):
         return self.contract.project
     
     class Meta:
         ordering = ["-invoice_date", "contract", "-invoice_number"]
+        
+class InvoiceForm(ModelForm):
+    class Meta:
+        model = Invoice
+        exclude = ("contract",)
+
 
 class ChangeStatus(models.Model):
     id = models.PositiveSmallIntegerField(primary_key=True)
@@ -77,8 +51,8 @@ class ChangeStatus(models.Model):
             return self.short
 
 class Change(models.Model):
-    contract = models.ForeignKey(Contract)
-    change_number = models.PositiveIntegerField()
+    contract = models.ForeignKey("contract.Contract")
+    number = models.PositiveIntegerField()
     invoiced = models.BooleanField(default=False)
     description = models.TextField(blank=True)
     status = models.ManyToManyField(ChangeStatus, through="ChangeStatusDate")
@@ -88,8 +62,22 @@ class Change(models.Model):
     def __unicode__(self):
         return u"%s%d" % (self.contract, self.change_number)
     
+    @staticmethod
+    def sum(changes):
+        amount = 0
+        timediff = 0
+        for change in changes:
+            amount += change.amount
+            timediff += change.timediff
+        return {"amount": amount, "timediff": timediff}
+    
     class Meta:
-        ordering = ["-status__date", "contract"]
+        ordering = ["contract__code"] # __date, "-status__status"
+
+class ChangeForm(ModelForm):
+    class Meta:
+        model = Change
+        exclude = ("contract", "number",)
 
 class ChangeStatusDate(models.Model):
     status = models.ForeignKey(ChangeStatus)
@@ -101,3 +89,19 @@ class ChangeStatusDate(models.Model):
             self.date = datetime.date.today()
         super(ChangeStatusDate, self).save()
 
+
+def set_change_number(sender, instance, **kwargs):
+    if not instance.number:
+        instance.number = sender.objects.filter(contract=instance.contract).count()+1
+
+def set_status_date(sender, instance, **kwargs):
+    if instance.status:
+        try:
+            status_date = ChangeStatusDate.objects.get(status=instance.status, change=instance)
+        except ChangeStatusDate.DoesNotExist:
+            status_date = ChangeStatusDate(status=instance.status, change=instance)
+        status_date.save()
+
+
+pre_save.connect(set_change_number, sender=Change)
+post_save.connect(set_status_date, sender=Change)

@@ -11,24 +11,47 @@
 	{# 	</form> #}
 {% endblock %}
 
-{% block contents %}
-	{% regroup project.contracts by category as contract_categories %}
+{% block edit_tools %}
+	<a href="{{ project.get_absolute_url }}contract/new/" class="tool add">Ny kontrakt</a>
+{% endblock %}
+
+{% block content %}
+	{% regroup project.contracts by category as categories %}
 	<table class="overview">
 		<thead>
-			
+			<tr>
+				<th rowspan="2" class="">Kontrakt</th>
+				<th rowspan="2" class="">Firmanavn</th>
+				<th rowspan="2" class="number">Budsjett</th>
+				<th rowspan="2" class="number">Kontrakt</th>
+
+				<th colspan="2" class="center">Endringer</th>
+				<th colspan="3" class="center">Totalt</th>
+				<th rowspan="2" class="number">Gjenst&aring;ende</th>
+				<th rowspan="2" class="">Kommentar</th>
+			</tr>
+			<tr>
+				<th class="number">Godkjent</th>
+				<th class="number">Uavklart</th>
+				<th class="number">Sum</th>
+				<th class="number">Fakturert</th>
+				<th class="number">%</th>
+			</tr>
 		</thead>
-		{% for cat in contract_categories %}
-			{% if cat.list|length %}
+		{% for cat in categories %}
+			{% if cat.list %}
 				<tbody>
 					<tr>
-						<th colspan="6">{{ cat.grouper }}</th>
+						<th colspan="9">{{ cat.grouper }}</th>
 					</tr>
 					{% for contract in cat.list %}
-						<tr>
+						<tr class="clickable contract" onDblClick="window.location = '{{ contract.get_absolute_url }}';">
 							<td>{{ contract.code }}</td>
 							<td>{{ contract.company }}</td>
 							<td>{{ contract.amount }}</td>
 							<td>{{ contract.budget }}</td>
+							<td>{{ contract.total_accepted_changes }}</td>
+							<td>{{ contract.total_pending_changes }}</td>
 							<td>{{ contract.comment }}</td>
 							<td>REDIGER</td>
 						</tr>

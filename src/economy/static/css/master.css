@@ -1,9 +1,10 @@
 /* @override 
 	http://localhost/static/css/master.css
 	http://static/css/master.css
+	http://localhost:8000/static/css/master.css
 */
 
-@import "jquery-ui.css";
+/*@import "jquery-ui.css";*/
 
 
 body {
@@ -23,6 +24,13 @@ a {
 :focus {
 	-moz-outline-style: none;
 }
+
+h1 {
+	font-size: 1.4em;
+	font-weight: normal;
+	margin: .5em 0;
+}
+
 .form {
 	padding: 0 1em;
 }
@@ -84,12 +92,19 @@ a {
 }
 
 
-#invoices {
-	/*margin: 0 1em;*/
+.inner {
+	margin: 1em;
+	padding: .5em 1em;
+	background: #ddd;
+	border: 1px solid #999;
 }
 
 table.overview {
 	width: 100%;
+}
+
+tr.clickable:hover {
+	background: #fff;
 }
 
 p.back {
@@ -306,6 +321,23 @@ td.number, th.number {
 	text-align: right;
 }
 
+table.form td, table.form th {
+	border: none;
+}
+table.form th {
+	vertical-align: top;
+	padding: .5em 0;
+	font-weight: normal;
+}
+table.form label {
+}
+
+
+ul.tabs {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
 
 .clearer {
 	clear: both;
