@@ -3,7 +3,7 @@
 from django.db import models
 from django.db.models import Q, F
 from django.db.models.signals import pre_save, post_save 
-from django.forms.models import ModelForm
+from django.forms.models import ModelForm, ModelChoiceField
 from django import forms
 
 #from economy.contract.models import Contract
@@ -11,14 +11,14 @@ from economy.contract.helpers import render_project_response
 
 class Invoice(models.Model):
     contract = models.ForeignKey("contract.Contract")
-    invoice_number = models.PositiveIntegerField()
-    invoice_date = models.DateField()
+    number = models.PositiveIntegerField()
+    date = models.DateField()
     description = models.TextField(blank=True)
     comment = models.TextField(blank=True)
     amount = models.IntegerField(default=0)
     
     def __unicode__(self):
-        return u"%s%d" % (self.contract.code, self.invoice_number)
+        return u"%s%d" % (self.contract.code, self.number)
     
     @staticmethod
     def sum(invoices):
@@ -27,11 +27,14 @@ class Invoice(models.Model):
             amount += invoice.amount
         return {"amount": amount}
     
+    def get_absolute_url(self):
+        return "%sinvoice/%d/" % (self.contract.get_absolute_url(), self.number)
+    
     def project(self):
         return self.contract.project
     
     class Meta:
-        ordering = ["-invoice_date", "contract", "-invoice_number"]
+        ordering = ["-date", "contract", "-number"]
         
 class InvoiceForm(ModelForm):
     class Meta:
@@ -46,21 +49,26 @@ class ChangeStatus(models.Model):
     
     def __unicode__(self):
         if self.title:
-            return self.title
+            s = self.title
         else:
-            return self.short
+            s = self.short
+        return "%d %s" % (self.id, s)
 
 class Change(models.Model):
     contract = models.ForeignKey("contract.Contract")
     number = models.PositiveIntegerField()
     invoiced = models.BooleanField(default=False)
     description = models.TextField(blank=True)
-    status = models.ManyToManyField(ChangeStatus, through="ChangeStatusDate")
+    status = models.ForeignKey(ChangeStatus)
+#    status = models.ManyToManyField(ChangeStatus, through="ChangeStatusDate")
     timediff = models.IntegerField(blank=True, default=0) # Days
     amount = models.IntegerField()
     
+    def status_date(self):
+        return ChangeStatusDate.objects.filter(change=self)[0]
+    
     def __unicode__(self):
-        return u"%s%d" % (self.contract, self.change_number)
+        return u"%s%d" % (self.contract, self.number)
     
     @staticmethod
     def sum(changes):
@@ -71,10 +79,18 @@ class Change(models.Model):
             timediff += change.timediff
         return {"amount": amount, "timediff": timediff}
     
+    def get_edit_url(self):
+        return "%schange/edit/%s/" % (self.contract.get_absolute_url(), self.number)
+    
+    def get_absolute_url(self):
+        return "%schange/%d/" % (self.contract.get_absolute_url(), self.number)
+    
     class Meta:
         ordering = ["contract__code"] # __date, "-status__status"
 
 class ChangeForm(ModelForm):
+#    status = ModelChoiceField(ChangeStatus.objects.all())
+    
     class Meta:
         model = Change
         exclude = ("contract", "number",)
@@ -85,9 +101,11 @@ class ChangeStatusDate(models.Model):
     date = models.DateField(blank=True)
     
     def save(self):
-        if not self.date:
-            self.date = datetime.date.today()
+        self.date = datetime.date.today()
         super(ChangeStatusDate, self).save()
+    
+    class Meta:
+        ordering = ("-date",)
 
 
 def set_change_number(sender, instance, **kwargs):
@@ -104,4 +122,4 @@ def set_status_date(sender, instance, **kwargs):
 
 
 pre_save.connect(set_change_number, sender=Change)
-post_save.connect(set_status_date, sender=Change)
+#post_save.connect(set_status_date, sender=Change)

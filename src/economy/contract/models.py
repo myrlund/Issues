@@ -50,6 +50,9 @@ class Contract(models.Model):
     amount = models.PositiveIntegerField(default=0)
     comment = models.TextField(blank=True)
     
+    def get_changes(self):
+        self.change_set.all()
+    
     def total_accepted_changes(self):
         changes = self.change_set.filter(status__short=ACCEPTED_SHORT).aggregate(amount=Sum("amount"), timediff=Sum("timediff"))
         return sum

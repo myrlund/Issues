@@ -1,17 +1,5 @@
-{% extends "change/base.html" %}
+{% extends "form.html" %}
 
 {% block inner_title %}
 	<h1>Ny endring</h1>
-{% endblock %}
-
-{% block inner_content %}
-	
-	<form action="" method="post">
-		<table class="form">
-			<input type="hidden" name="contract_id" value="{{ contract.id }}" />
-			{{ form.as_table }}
-		</table>
-		<input type="submit" name="" value="Lagre" />
-	</form>
-	
 {% endblock %}

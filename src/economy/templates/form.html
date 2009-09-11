@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block help %}
+	
+{% endblock %}
+
+{% block inner_content %}
+	<form action="" method="post">
+		<input type="hidden" name="project_id" value="{{ project.id }}" />
+		
+		<table class="form">
+			{{ form.as_table }}
+		</table>
+		
+		<input type="submit" value="Lagre" />{% if cancel %} &nbsp; <a href="{{ cancel }}" class="cancel">avbryt</a>{% endif %}
+	</form>
+{% endblock %}
+

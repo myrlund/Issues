@@ -60,9 +60,7 @@
 		<div id="contents">
 			{% block content %}
 				<div class="inner">
-					{% block inner_title %}
-						<h1>{{ pagetitle }}</h1>
-					{% endblock %}
+					<h1>{% block inner_title %}{{ pagetitle }}{% endblock %}</h1>
 					{% block inner_content %}
 						Standardinnhold.
 					{% endblock %}

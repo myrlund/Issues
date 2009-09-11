@@ -3,9 +3,9 @@ from economy.invoices.models import *
 from django.contrib import admin
 
 class InvoiceAdmin(admin.ModelAdmin):
-    list_display = ("project", "contract", "invoice_number", "invoice_date",)
+    list_display = ("project", "contract", "number", "date",)
     list_filter = ("contract",)
-    ordering = ("-invoice_date", "contract", "-invoice_number",)
+    ordering = ("-date", "contract", "-number",)
 
 admin.site.register(Invoice, InvoiceAdmin)
 admin.site.register(Change)

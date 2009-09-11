@@ -1,0 +1,41 @@
+{% extends "invoice/base.html" %}
+
+{% block inner_title %}
+	{{ invoice.contract }}: {{ invoice.number }}
+{% endblock %}
+
+{% block inner_content %}
+
+	<table class="form">
+		<tr>
+			<th>Kontrakt:</th>
+			<td>{{ invoice.contract }}</td>
+		</tr>
+		<tr>
+			<th>Fakturanummer:</th>
+			<td>{{ invoice.number }}</td>
+		</tr>
+		<tr>
+			<th>Fakturadato:</th>
+			<td>{{ invoice.date }}</td>
+		</tr>
+		<tr>
+			<th>Kommentar:</th>
+			<td>{{ invoice.comment }}</td>
+		</tr>
+		<tr>
+			<th>Beskrivelse:</th>
+			<td>{{ invoice.description }}</td>
+		</tr>
+		<tr>
+			<th>Beløp:</th>
+			<td>{{ invoice.amount }}</td>
+		</tr>
+	</table>
+
+	<p>
+		<a href="{{ invoice.contract.get_absolute_url }}">&laquo; Tilbake til {{ invoice.contract }}</a> | 
+		<a href="{{ invoice.get_edit_url }}">Redigér endring</a>
+	</p>
+	
+{% endblock %}
