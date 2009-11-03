@@ -5,6 +5,7 @@ from django.db.models import Q, F
 from django.db.models.signals import pre_save, post_save 
 from django.forms.models import ModelForm, ModelChoiceField
 from django import forms
+from django.conf import settings
 
 #from economy.contract.models import Contract
 from economy.contract.helpers import render_project_response
@@ -78,6 +79,18 @@ class Change(models.Model):
             amount += change.amount
             timediff += change.timediff
         return {"amount": amount, "timediff": timediff}
+    
+    def amount_accepted(self):
+        if self.status.short == settings.ACCEPTED_SHORT:
+            return self.amount
+        else:
+            return 0
+    
+    def amount_pending(self):
+        if self.status.short != settings.ACCEPTED_SHORT:
+            return self.amount
+        else:
+            return 0
     
     def get_edit_url(self):
         return "%schange/edit/%s/" % (self.contract.get_absolute_url(), self.number)

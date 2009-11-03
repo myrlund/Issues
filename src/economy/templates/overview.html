@@ -50,8 +50,8 @@
 							<td>{{ contract.company }}</td>
 							<td>{{ contract.amount }}</td>
 							<td>{{ contract.budget }}</td>
-							<td>{{ contract.total_accepted_changes.amount }}</td>
-							<td>{{ contract.total_pending_changes.amount }}</td>
+							<td>{{ contract.total_accepted_changes.amount|default:"0" }}</td>
+							<td>{{ contract.total_pending_changes.amount|default:"0" }}</td>
 							<td>{{ contract.comment }}</td>
 							<td>REDIGER</td>
 						</tr>

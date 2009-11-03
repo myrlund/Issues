@@ -1,40 +1,42 @@
 
-<ul class="tabs">
+<div class="tabs">
+	<ul>
 	
-	<li class="tab changes">
-		{% if contract.invoices %}
-			<table class="invoices grid">
-				{% include "invoice/table_headers.html" %}
-				{% for invoice in contract.invoices %}
-					<tr>
-						<td class="number">{{ invoice.number }}</td>
-						<td class="date">{{ invoice.date }}</td>
-						<td>{{ invoice.description }}</td>
-						<td>{{ invoice.comment }}</td>
-						<td class="number">{{ invoice.amount }}</td>
-					</tr>
-				{% endfor %}
-			</table>
-		{% else %}
-			<div class="inner">
-				<p>Ingen fakturaer registrert. <a href="{{ contract.get_absolute_url }}invoice/new/">Registrer ny faktura.</a></p>
-			</div>
-		{% endif %}
-	</li>
+		<li class="tab changes" title="Fakturaer">
+			{% if contract.get_invoices %}
+				<table class="invoices grid">
+					{% include "invoice/table_headers.html" %}
+					{% for invoice in contract.get_invoices %}
+						<tr>
+							<td class="number">{{ invoice.number }}</td>
+							<td class="date">{{ invoice.date }}</td>
+							<td>{{ invoice.description }}</td>
+							<td>{{ invoice.comment }}</td>
+							<td class="number">{{ invoice.amount }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% else %}
+				<div class="inner">
+					<p>Ingen fakturaer registrert. <a href="{{ contract.get_absolute_url }}invoice/new/">Registrer ny faktura.</a></p>
+				</div>
+			{% endif %}
+		</li>
 	
-	<li class="tab changes">
-		{% if contract.get_changes %}
-			<table class="invoices grid">
-				{% include "change/table_headers.html" %}
-				{% for change in contract.get_changes %}
-					{% include "change/row.html" %}
-				{% endfor %}
-			</table>
-		{% else %}
-			<div class="inner">
-				<p>Ingen endringer registrert. <a href="{{ contract.get_absolute_url }}change/new/">Registrer ny endring.</a></p>
-			</div>
-		{% endif %}
-	</li>
+		<li class="tab changes" title="Endringer">
+			{% if contract.get_changes %}
+				<table class="invoices grid">
+					{% include "change/table_headers.html" %}
+					{% for change in contract.get_changes %}
+						{% include "change/row.html" %}
+					{% endfor %}
+				</table>
+			{% else %}
+				<div class="inner">
+					<p>Ingen endringer registrert. <a href="{{ contract.get_absolute_url }}change/new/">Registrer ny endring.</a></p>
+				</div>
+			{% endif %}
+		</li>
 	
-</ul>
+	</ul>
+</div>

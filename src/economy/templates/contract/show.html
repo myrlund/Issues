@@ -6,34 +6,37 @@
 
 {% block content %}
 	
-	<div class="inner">
-		<h1>{{ pagetitle }}</h1>
-		<table class="form">
-			<tr>
-				<th>Kategori:</th>
-				<td>{{ contract.category }}</td>
-			</tr>
-			<tr>
-				<th>Budsjett:</th>
-				<td>{{ contract.budget }}</td>
-			</tr>
-			<tr>
-				<th>Kontraktsbeløp:</th>
-				<td>{{ contract.amount }}</td>
-			</tr>
-			<tr>
-				<th>Kommentar:</th>
-				<td>{{ contract.comment }}</td>
-			</tr>
-		</table>
+	<div class="inner nopad">
+		<div class="pad">
+			<h1>{{ pagetitle }}</h1>
+			<table class="form">
+				<tr>
+					<th>Kategori:</th>
+					<td>{{ contract.category }}</td>
+				</tr>
+				<tr>
+					<th>Budsjett:</th>
+					<td>{{ contract.budget }}</td>
+				</tr>
+				<tr>
+					<th>Kontraktsbeløp:</th>
+					<td>{{ contract.amount }}</td>
+				</tr>
+				<tr>
+					<th>Kommentar:</th>
+					<td>{{ contract.comment }}</td>
+				</tr>
+			</table>
 	
-		<p>
-			<a href="{{ contract.project.get_absolute_url }}">&laquo; Tilbake til oversikten</a> | 
-			<a href="{{ contract.get_edit_url }}">Redigér kontrakt</a>
-		</p>
+			<p>
+				<a href="{{ contract.project.get_absolute_url }}">&laquo; Tilbake til oversikten</a> | 
+				<a href="{{ contract.get_edit_url }}">Redigér kontrakt</a>
+			</p>
+		</div>
+		
+		{% include "contract/list_for_contract.html" %}
+		
 	</div>
-	
-	{% include "contract/list_for_contract.html" %}
 	
 {% endblock %}
 

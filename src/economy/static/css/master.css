@@ -94,9 +94,19 @@ h1 {
 
 .inner {
 	margin: 1em;
-	padding: .5em 1em;
 	background: #ddd;
 	border: 1px solid #999;
+}
+.inner, .inner .pad {
+	padding: .5em 1em;
+}
+.inner.nopad {
+	padding: 0;
+}
+
+table.inner {
+	padding: 0;
+	background: none;
 }
 
 table.overview {
@@ -211,18 +221,6 @@ a.filterlink.on {
 	margin: .3em 0;
 }
 
-.ui-widget-header {
-	background: #cdcdcd;
-	border-color: #999;
-	color: #333;
-}
-.ui-widget-content {
-	border-color: #777;
-}
-.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus {
-	background: #;
-}
-
 #toolbar #flash {
 	float: left;
 	margin: 5px .5em;
@@ -333,7 +331,10 @@ table.form label {
 }
 
 
-ul.tabs {
+.ui-tabs .ui-tabs-hide {
+     display: none;
+}
+.tabs ul {
 	list-style-type: none;
 	padding: 0;
 	margin: 0;

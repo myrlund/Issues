@@ -2,7 +2,9 @@
 	<td class="number">{{ change.number }}</td>
 	<td class="bool">{{ change.invoiced|yesno:"Ja,Nei,Uvisst" }}</td>
 	<td>{{ change.description }}</td>
-	<td>{{ change.status.id }}: {{ change.status.title }}</td>
+	<td>{{ change.comment }}</td>
+	<td>{{ change.status }}</td>
 	<td class="number">{{ change.timediff }} dager</td>
-	<td class="number">{{ change.amount }}</td>
+	<td class="number">{{ change.amount_accepted }}</td>
+	<td class="number">{{ change.amount_pending }}</td>
 </tr>

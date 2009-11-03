@@ -3,11 +3,10 @@
 from django.db import models
 from django.forms import ModelForm
 from django.db.models import Q, F, Sum
+from django.conf import settings
 
 # from economy.project.models import Project
 # from economy.invoices.models import Change, Invoice 
-
-ACCEPTED_SHORT = "godkjent"
 
 class Project(models.Model):
     id = models.PositiveIntegerField("prosjektnummer", primary_key=True)
@@ -51,14 +50,17 @@ class Contract(models.Model):
     comment = models.TextField(blank=True)
     
     def get_changes(self):
-        self.change_set.all()
+        return self.change_set.all()
+    
+    def get_invoices(self):
+        return self.invoice_set.all()
     
     def total_accepted_changes(self):
-        changes = self.change_set.filter(status__short=ACCEPTED_SHORT).aggregate(amount=Sum("amount"), timediff=Sum("timediff"))
+        sum = self.change_set.filter(status__short=settings.ACCEPTED_SHORT).aggregate(amount=Sum("amount"), timediff=Sum("timediff"))
         return sum
     
     def total_pending_changes(self):
-        sum = self.change_set.filter(~Q(status__short=ACCEPTED_SHORT)).aggregate(amount=Sum("amount"), timediff=Sum("timediff"))
+        sum = self.change_set.filter(~Q(status__short=settings.ACCEPTED_SHORT)).aggregate(amount=Sum("amount"), timediff=Sum("timediff"))
         return sum
     
     def calculate_total(self):

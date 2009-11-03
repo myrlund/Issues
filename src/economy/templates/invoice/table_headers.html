@@ -1,5 +1,7 @@
 <tr>
-	<th class="">Kontrakt</th>
+	{% if not contract %}
+		<th class="">Kontrakt</th>
+	{% endif %}
 	<th class="number">Nummer</th>
 	<th class="date">Fakturadato</th>
 	<th class="">Beskrivelse</th>
