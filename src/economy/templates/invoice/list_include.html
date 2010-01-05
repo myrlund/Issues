@@ -1,0 +1,16 @@
+{% if invoices %}
+	<table class="invoices inner grid">
+		{% include "invoice/table_headers.html" %}
+		{% for invoice in invoices %}
+			<tr>
+				<td class="number">{{ invoice.invoice_number }}</td>
+				<td class="date">{{ invoice.invoice_date }}</td>
+				<td>{{ invoice.description }}</td>
+				<td>{{ invoice.comment }}</td>
+				<td class="number">{{ invoice.amount }}</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% else %}
+	<p>Ingen fakturaer registrert. <a href="{{ contract.get_absolute_url }}invoice/new/">Registrer ny faktura.</a></p>
+{% endif %}

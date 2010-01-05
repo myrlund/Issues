@@ -7,12 +7,16 @@
 {% block inner_content %}
 	<form action="" method="post">
 		<input type="hidden" name="project_id" value="{{ project.id }}" />
+		{% if next %}
+			<input type="hidden" name="next" value="{{ next }}" />
+		{% endif %}
 		
 		<table class="form">
 			{{ form.as_table }}
 		</table>
 		
 		<input type="submit" value="Lagre" />{% if cancel %} &nbsp; <a href="{{ cancel }}" class="cancel">avbryt</a>{% endif %}
+		<a href="{% if instance.pk %}{{ instance.get_absolute_url }}{% else %}{{ contract.get_absolute_url }}{% endif %}">avbryt</a>
 	</form>
 {% endblock %}
 

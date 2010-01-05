@@ -1,4 +1,6 @@
-#Wed Sep 09 23:55:53 CEST 2009
+#Mon Jan 04 21:12:18 CET 2010
 eclipse.preferences.version=1
 encoding//src/economy/contract/models.py=utf8
 encoding//src/economy/invoices/models.py=utf8
+encoding//src/economy/invoices/views.py=utf8
+encoding//src/economy/statusdatetest.py=utf-8

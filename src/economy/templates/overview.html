@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block edit_tools %}
-	<a href="{{ project.get_absolute_url }}contract/new/" class="tool add">Ny kontrakt</a>
+	<a href="{{ project.new_contract_url }}" class="tool new contract">Ny kontrakt</a>
 {% endblock %}
 
 {% block content %}
@@ -42,18 +42,21 @@
 			{% if cat.list %}
 				<tbody>
 					<tr>
-						<th colspan="9">{{ cat.grouper }}</th>
+						<th colspan="11">{{ cat.grouper }}</th>
 					</tr>
 					{% for contract in cat.list %}
 						<tr class="clickable contract" onDblClick="window.location = '{{ contract.get_absolute_url }}';">
 							<td>{{ contract.code }}</td>
 							<td>{{ contract.company }}</td>
-							<td>{{ contract.amount }}</td>
-							<td>{{ contract.budget }}</td>
-							<td>{{ contract.total_accepted_changes.amount|default:"0" }}</td>
-							<td>{{ contract.total_pending_changes.amount|default:"0" }}</td>
+							<td class="number">{{ contract.budget }}</td>
+							<td class="number">{{ contract.amount }}</td>
+							<td class="number">{{ contract.total_changes.accepted.amount|default:"0" }}</td>
+							<td class="number">{{ contract.total_changes.pending.amount|default:"0" }}</td>
+							<td class="number">{{ contract.total_sum|default:"0" }}</td>
+							<td class="number">{{ contract.total_invoices|default:"0" }}</td>
+							<td class="number">{{ contract.total_percent|stringformat:".1f" }}&nbsp;%</td>
+							<td class="number">{{ contract.total_remaining|default:"0" }}</td>
 							<td>{{ contract.comment }}</td>
-							<td>REDIGER</td>
 						</tr>
 					{% endfor %}
 				</tbody>		

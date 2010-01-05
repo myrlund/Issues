@@ -1,5 +1,57 @@
 {% extends "form.html" %}
 
 {% block inner_title %}
-	<h1>Ny endring</h1>
+	<h1>
+		{% if instance.pk %}
+			Endre endringsmelding
+		{% else %}
+			Registrer ny endringsmelding
+		{% endif %}
+	</h1>
+{% endblock %}
+
+{% block inner_content %}
+	<form action="" method="post">
+		<input type="hidden" name="project_id" value="{{ project.id }}" />
+		{% if next %}
+			<input type="hidden" name="next" value="{{ next }}" />
+		{% endif %}
+		{% if instance %}
+			<input type="hidden" value="{{ instance.id }}" id="change_id" />
+		{% endif %}
+		
+		<table class="form">
+			<tr>
+				<th><label for="id_number">Nummer:</label></th>
+				<td>{{ form.number }}</td>
+			</tr>
+			<tr>
+				<th><label for="id_invoiced">Fakturert?</label></th>
+				<td>{{ form.invoiced }}</td>
+			</tr>
+			<tr>
+				<th><label for="id_description">Beskrivelse:</label></th>
+				<td>{{ form.description }}</td>
+			</tr>
+			<tr>
+				<th><label for="id_status">Status:</label></th>
+				<td>
+					<span class="statuspicker">{{ form.status }}</span>
+					<span class="date">{{ dateform.date }}</span>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="id_timediff">Tidskrav:</label></th>
+				<td>{{ form.timediff }} dager</td>
+			</tr>
+			<tr>
+				<th><label for="id_amount">Beløp:</label></th>
+				<td>{{ form.amount }}</td>
+			</tr>
+			{# {{ form.as_table }} #}
+		</table>
+		
+		<input type="submit" value="Lagre" />{% if cancel %} &nbsp; <a href="{{ cancel }}" class="cancel">avbryt</a>{% endif %}
+		<a href="{% if instance.pk %}{{ instance.get_absolute_url }}{% else %}{{ contract.get_absolute_url }}{% endif %}">avbryt</a>
+	</form>
 {% endblock %}

@@ -8,10 +8,12 @@
 
 
 body {
-	background: #eee;
 	font-size: 75%;
 	color: #333;
 	margin: 0;
+}
+body, tr.quickedit td {
+	background: #eee;
 }
 body, textarea, a.filter {
 	font-family: Verdana;
@@ -31,7 +33,7 @@ h1 {
 	margin: .5em 0;
 }
 
-.form {
+.datatable, .form {
 	padding: 0 1em;
 }
 
@@ -115,6 +117,7 @@ table.overview {
 
 tr.clickable:hover {
 	background: #fff;
+	cursor: default;
 }
 
 p.back {
@@ -143,20 +146,55 @@ a.cancel:hover {
 	color: #333;
 }
 
+input#id_date, input.datepicker {
+	width: 71px;
+}
+
+.ui-datepicker-trigger {
+	margin-left: 2px;
+	position: relative;
+	top: 3px;
+}
+
 .tools a {
 	display: block;
 	float: left;
+	margin-right: 1em;
 }
 
-a.tool, a.add, a.edit, a.delete, a.save, a.home, a.print, a.cancel.icon {
+a.icon, a.tool, a.add, a.edit, a.delete, a.save, a.home, a.print, a.cancel.icon {
 	background: no-repeat left center;
 	/*color: #333;*/
 	text-decoration: none;
 	padding: 3px 0;
-	padding-left: 24px;
+	padding-left: 20px;
 	min-height: 20px;
 	cursor: default;
+	font-size: 13px;
 }
+
+a.new.change {
+	background-image: url(/static/gfx/note_add.png);
+}
+a.edit.change {
+	background-image: url(/static/gfx/note_edit.png);
+}
+a.new.invoice {
+	background-image: url(/static/gfx/page_add.png);
+}
+a.new.contract {
+	background-image: url(/static/gfx/script_add.png);
+}
+a.doneediting {
+	background-image: url(/static/gfx/lock.png);
+}
+a.home {
+	background-image: url(/static/gfx/house.png);
+}
+a.print {
+	background-image: url(/static/gfx/printer.png);
+}
+
 
 th.tools, td.tools {
 	text-align: left;
@@ -277,6 +315,9 @@ table td, table th {
 	border: 1px solid #bbb;
 	text-align: left;
 }
+tr.quickedit td {
+	background-color: #eee;
+}
 
 tbody.tablesection {
 	margin: 15px 0;
@@ -318,9 +359,16 @@ tr.total td {
 td.number, th.number {
 	text-align: right;
 }
+td.center, th.center {
+	text-align: center;
+}
 
 table.form td, table.form th {
 	border: none;
+}
+table.form td {
+	font-size: 0.8em;
+	font-style: italic;
 }
 table.form th {
 	vertical-align: top;
@@ -328,6 +376,14 @@ table.form th {
 	font-weight: normal;
 }
 table.form label {
+}
+
+
+/*Form styling*/
+input[type=text], textarea {
+	border: 1px solid #777;
+	padding: 2px 3px;
+	color: #111;
 }
 
 

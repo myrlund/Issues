@@ -1,0 +1,18 @@
+<tr class="contract quickedit">
+	<td class="number">{{ change.number }}</td>
+	<td class="center"><input type="checkbox" name="invoiced" onchange="setInvoiced(this, {{ change.id }})" {{ change.invoiced|yesno:'checked="checked",' }} /></td>
+	<td>{{ change.description }}</td>
+	<td>{{ change.comment }}</td>
+	<td id="test">
+		<select name="status_id" id="{{ change.id }}_status" onchange="updateFieldValue(this, '#{{ change.id }}_status_date', {{ change.id }})">
+			{% for status in change.get_statuses %}
+				<option value="{{ status.id }}" {% ifequal status.id change.status.id %}selected="selected"{% endifequal %}>{{ status.id }} {{ status }}</option>
+			{% endfor %}
+		</select>
+		<input name="status_date" type="text" id="{{ change.id }}_status_date" value="{{ change.status_date.date|date:'Y-m-d' }}" class="text datepicker" />
+		<button onclick="setStatus(['#{{ change.id }}_status', '#{{ change.id }}_status_date'], this, {{ change.id }})">OK</button>
+	</td>
+	<td class="number">{{ change.timediff }} dager</td>
+	<td class="number">{{ change.amount_accepted }}</td>
+	<td class="number">{{ change.amount_pending }}</td>
+</tr>

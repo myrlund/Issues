@@ -10,14 +10,14 @@ def load_project(project_id):
     project_id = int(project_id)
     try:
         project = Project.objects.get(id=project_id)
-    except Project.DoesNotExist:
+    except:
         project = Project.objects.create(id=project_id)
     return project
 
 def load_contract(contract_code):
     try:
         contract = Contract.objects.get(code=contract_code)
-    except Contract.DoesNotExist:
+    except:
         contract = None
     return contract
 

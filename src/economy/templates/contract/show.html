@@ -1,42 +1,53 @@
 {% extends "base.html" %}
 
+{% block extra_headers %}
+	{% if quickedit %}
+		<script src="/static/scripts/jquery.color.js" type="text/javascript"></script>
+		<script src="/static/scripts/quickedit.js" type="text/javascript"></script>
+	{% endif %}
+{% endblock %}
+{% block bodyparams %}{% if quickedit %}onbeforeunload="return checkOutstandingRequests()"{% endif %}{% endblock %}
+
 {% block help %}
 	
 {% endblock %}
 
 {% block content %}
 	
-	<div class="inner nopad">
-		<div class="pad">
-			<h1>{{ pagetitle }}</h1>
-			<table class="form">
-				<tr>
-					<th>Kategori:</th>
-					<td>{{ contract.category }}</td>
-				</tr>
-				<tr>
-					<th>Budsjett:</th>
-					<td>{{ contract.budget }}</td>
-				</tr>
-				<tr>
-					<th>Kontraktsbeløp:</th>
-					<td>{{ contract.amount }}</td>
-				</tr>
-				<tr>
-					<th>Kommentar:</th>
-					<td>{{ contract.comment }}</td>
-				</tr>
-			</table>
+	<div class="inner">
+		<h1>{{ pagetitle }}</h1>
+		<table class="datatable">
+			<tr>
+				<th>Kategori:</th>
+				<td>{{ contract.category }}</td>
+			</tr>
+			<tr>
+				<th>Budsjett:</th>
+				<td>{{ contract.budget }}</td>
+			</tr>
+			<tr>
+				<th>Kontraktsbeløp:</th>
+				<td>{{ contract.amount }}</td>
+			</tr>
+			<tr>
+				<th>Kommentar:</th>
+				<td>{{ contract.comment }}</td>
+			</tr>
+		</table>
 	
-			<p>
-				<a href="{{ contract.project.get_absolute_url }}">&laquo; Tilbake til oversikten</a> | 
-				<a href="{{ contract.get_edit_url }}">Redigér kontrakt</a>
-			</p>
-		</div>
-		
-		{% include "contract/list_for_contract.html" %}
-		
+		<p>
+			<a href="{{ contract.project.get_absolute_url }}">&laquo; Tilbake til oversikten</a> | 
+			<a href="{{ contract.get_edit_url }}">Redigér kontrakt</a>
+		</p>
 	</div>
 	
+	{% include "contract/list_for_contract.html" %}
+	{% if highlight %}
+		<script type="text/javascript">
+		<!--
+			highlight("tr#{{ highlight }}", "#ccffcc");
+		// -->
+		</script>
+	{% endif %}
 {% endblock %}
 

@@ -7,7 +7,7 @@
 	<th rowspan="2" class="">Beskrivelse</th>
 	<th rowspan="2" class="">Kommentar</th>
 	<th rowspan="2" class="">Status</th>
-	{# <th rowspan="2" class="">Dato for status</th> #}
+	{% if not quickedit %}<th rowspan="2" class="number">Dato for status</th>{% endif %}
 	<th rowspan="2" class="number">Tidskrav</th>
 	<th colspan="2" class="center">Endringer</th>
 </tr>

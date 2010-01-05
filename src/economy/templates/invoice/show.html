@@ -1,7 +1,7 @@
 {% extends "invoice/base.html" %}
 
 {% block inner_title %}
-	{{ invoice.contract }}: {{ invoice.number }}
+	{{ invoice.contract }}: Faktura {{ invoice.number }}
 {% endblock %}
 
 {% block inner_content %}
@@ -35,7 +35,7 @@
 
 	<p>
 		<a href="{{ invoice.contract.get_absolute_url }}">&laquo; Tilbake til {{ invoice.contract }}</a> | 
-		<a href="{{ invoice.get_edit_url }}">Redigér endring</a>
+		<a href="{{ invoice.get_absolute_url }}edit/">Redigér faktura</a>
 	</p>
 	
 {% endblock %}
