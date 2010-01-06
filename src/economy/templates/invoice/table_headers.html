@@ -1,10 +1,17 @@
 <tr>
-	{% if not contract %}
-		<th class="">Kontrakt</th>
-	{% endif %}
-	<th class="number">Nummer</th>
-	<th class="date">Fakturadato</th>
-	<th class="">Beskrivelse</th>
-	<th class="">Kommentar</th>
-	<th class="number" colspan="2">Beløp</th>
+	<th class="number">
+		<a href="?isortby={% ifequal isortby 'number' %}-{% endifequal %}number#invoices">Nummer</a>
+	</th>
+	<th class="date">
+		<a href="?isortby={% ifequal isortby 'date' %}-{% endifequal %}date#invoices">Fakturadato</a>
+	</th>
+	<th class="">
+		<a href="?isortby={% ifequal isortby 'description' %}-{% endifequal %}description#invoices">Beskrivelse</a>
+	</th>
+	<th class="">
+		<a href="?isortby={% ifequal isortby 'comment' %}-{% endifequal %}comment#invoices">Kommentar</a>
+	</th>
+	<th class="number" colspan="2">
+		<a href="?isortby={% ifequal isortby 'amount' %}-{% endifequal %}amount#invoices">Beløp</a>
+	</th>
 </tr>

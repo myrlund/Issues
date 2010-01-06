@@ -23,7 +23,11 @@
 		<table class="form">
 			<tr>
 				<th><label for="id_number">Nummer:</label></th>
-				<td>{{ form.number }}</td>
+				<td>
+					<div class="inline">{{ form.number }}</div>
+					<button class="inline" title="Hent neste ledige endringsnummer" onclick="nextChangeNumber({{ contract.id }}, '#id_number');return false;"><img src="/static/gfx/arrow_refresh_small.png" alt="" /></button>
+					<div class="clearer"></div>
+				</td>
 			</tr>
 			<tr>
 				<th><label for="id_invoiced">Fakturert?</label></th>
@@ -32,6 +36,10 @@
 			<tr>
 				<th><label for="id_description">Beskrivelse:</label></th>
 				<td>{{ form.description }}</td>
+			</tr>
+			<tr>
+				<th><label for="id_comment">Kommentar:</label></th>
+				<td>{{ form.comment }}</td>
 			</tr>
 			<tr>
 				<th><label for="id_status">Status:</label></th>
@@ -51,7 +59,7 @@
 			{# {{ form.as_table }} #}
 		</table>
 		
-		<input type="submit" value="Lagre" />{% if cancel %} &nbsp; <a href="{{ cancel }}" class="cancel">avbryt</a>{% endif %}
-		<a href="{% if instance.pk %}{{ instance.get_absolute_url }}{% else %}{{ contract.get_absolute_url }}{% endif %}">avbryt</a>
+		<input type="submit" value="Lagre" />
+		<a href="{{ contract.get_absolute_url }}">avbryt</a>
 	</form>
 {% endblock %}

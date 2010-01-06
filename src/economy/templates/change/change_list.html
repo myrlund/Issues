@@ -1,0 +1,16 @@
+{% include "change/table_headers.html" %}
+{% for change in changes %}
+	{% if quickedit %}
+		{% include "change/row_quickedit.html" %}
+	{% else %}
+		{% include "change/row.html" %}
+	{% endif %}
+{% endfor %}
+{% if not quickedit %}
+	<tr class="sumrow">
+		<td colspan="6">Totalt</td>
+		<td class="number">{{ cdata.timediff|default:"0" }} dager</td>
+		<td class="number">{{ cdata.accepted|default:"0" }}</td>
+		<td class="number">{{ cdata.pending|default:"0" }}</td>
+	</tr>
+{% endif %}

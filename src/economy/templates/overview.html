@@ -1,23 +1,13 @@
 {% extends "base.html" %}
 
-{% block right %}
-	<p>{{ project.title }} ({{ project.tax_rate }}% MVA)</p>
-	{# <form action="/"> #}
-	{# 		<select name="mode" onchange="$(this).parents('form').submit()"> #}
-	{# 			<option value="change" selected="selected">Endringer</option> #}
-	{# 			<option value="planned">Fakturaer</option> #}
-	{# 		</select> #}
-	{# 		<input type="submit" class="button" value="Vis" /> #}
-	{# 	</form> #}
-{% endblock %}
-
 {% block edit_tools %}
+	<a href="{{ project.get_edit_url }}" class="tool edit project">Rediger prosjektinfo</a>
 	<a href="{{ project.new_contract_url }}" class="tool new contract">Ny kontrakt</a>
 {% endblock %}
 
 {% block content %}
 	{% regroup project.contracts by category as categories %}
-	<table class="overview">
+	<table class="overview grid">
 		<thead>
 			<tr>
 				<th rowspan="2" class="">Kontrakt</th>

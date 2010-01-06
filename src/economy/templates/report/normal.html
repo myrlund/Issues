@@ -1,0 +1,60 @@
+{% extends "report.html" %}
+
+{% block contents %}
+	
+	<table class="normal grid">
+		<thead>
+			<tr class="header">
+
+				<th rowspan="2" class="">Kontrakt</th>
+				<th rowspan="2" class="">Firmanavn</th>
+				<th rowspan="2" class="number">Budsjett</th>
+				<th rowspan="2" class="number">Kontrakt</th>
+				
+				<th colspan="2" class="center">Endringer</th>
+				
+				<th colspan="3" class="center">Totalt</th>
+				<th rowspan="2" class="number">Gjenst&aring;ende</th>
+				
+				<th rowspan="2" class="">Kommentar</th>
+			</tr>
+			<tr class="header">
+				<th class="number">Godkjent</th>
+				<th class="number">Uavklart</th>
+				
+				<th class="number">Sum</th>
+				<th class="number">Fakturert</th>
+				<th class="number">%</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for category in categories %}
+				{% if category.contracts|length %}
+					<tr class="category">
+						<td colspan="11">{{ category.title }}</td>
+					</tr>
+					{% for contract in category.contracts %}
+						<tr>
+							<td class="">{{ contract }}</td>
+							<td class="">{{ contract.company }}</td>
+							<td class="number">{{ contract.budget }}</td>
+							<td class="number">{{ contract.amount }}</td>
+						
+							<td class="number">{{ contract.total_accepted_changes.amount|default:"0" }}</td>
+							<td class="number">{{ contract.total_pending_changes.amount|default:"0" }}</td>
+						
+							<td class="number">{{ contract.total_sum }}</td>
+							<td class="number">{{ contract.total_invoices }}</td>
+							<td class="number">{{ contract.total_percent|stringformat:".1f" }}&nbsp;%</td>
+							<td class="number">{{ contract.total_remaining }}</td>
+						
+							<td class="">{{ contract.comment }}</td>
+						</tr>
+					{% endfor %}
+				{% endif %}
+				<tr></tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	
+{% endblock %}

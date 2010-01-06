@@ -1,0 +1,8 @@
+{% include "invoice/table_headers.html" %}
+{% for invoice in invoices %}
+	{% include "invoice/row.html" %}
+{% endfor %}
+<tr class="sumrow">
+	<td colspan="4">Totalt</td>
+	<td class="number">{{ idata.amount|default:"0" }}</td>
+</tr>

@@ -17,7 +17,8 @@ urlpatterns = patterns('',
     
     url(r'^$', 'economy.contract.views.project_overview', name='project_overview'),
     
-    (r'ajaxupdate/change/setinvoiced/(?P<change_id>\d+)/$', 'economy.invoices.views.set_invoiced'),
-    (r'ajaxupdate/change/setstatus/(?P<change_id>\d+)/$', 'economy.invoices.views.set_status'),
-    (r'ajaxinfo/statusdate/(?P<change_id>\d+)/(?P<status>\d+)/$', 'economy.invoices.views.getstatusdate'),
+    (r'^ajaxupdate/change/setinvoiced/(?P<change_id>\d+)/$', 'economy.invoices.views.set_invoiced'),
+    (r'^ajaxupdate/change/setstatus/(?P<change_id>\d+)/$', 'economy.invoices.views.set_status'),
+    (r'^ajaxinfo/statusdate/(?P<change_id>\d+)/(?P<status>\d+)/$', 'economy.invoices.views.getstatusdate'),
+    (r'^ajaxinfo/changenumber/(?P<contract_id>\d+)/$', 'economy.invoices.views.getchangenumber'),
 )

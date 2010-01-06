@@ -6,12 +6,12 @@ from economy.contract.models import Project, Contract
 def get_template_dir(model):
     return model.__name__.lower()+"/"
 
-def load_project(project_id):
-    project_id = int(project_id)
+def load_project(project_number):
+    project_number = int(project_number)
     try:
-        project = Project.objects.get(id=project_id)
+        project = Project.objects.get(number=project_number)
     except:
-        project = Project.objects.create(id=project_id)
+        project = Project.objects.create(number=project_number)
     return project
 
 def load_contract(contract_code):

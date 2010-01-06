@@ -44,19 +44,18 @@
 				{% endblock %}
 			</div>
 			{% block help %}
-				<div class="section">
-					<div class="info">Dobbeltklikk en oppføring for å redigere.</div>
-				</div>
+				{# <div class="section"> #}
+				{# 	<div class="info">Dobbeltklikk en oppføring for å redigere.</div> #}
+				{# </div> #}
 			{% endblock %}
 			<div id="flash"></div>
-			<div class="right" title="change">
+			<div class="right">
 				{% block right %}
-					{{ user }}
+					<p>{{ project.title }} ({{ project.tax_rate }}% MVA)</p>
 				{% endblock %}
 			</div>
 			<div class="right">
 				{% block userpanel %}
-					Innlogget bruker: "{{ user }}"
 				{% endblock %}
 			</div>
 		</div>

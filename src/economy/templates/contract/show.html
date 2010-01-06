@@ -17,9 +17,15 @@
 	<div class="inner">
 		<h1>{{ pagetitle }}</h1>
 		<table class="datatable">
+			{% if contract.category %}
+				<tr>
+					<th>Kategori:</th>
+					<td>{{ contract.category }}</td>
+				</tr>
+			{% endif %}
 			<tr>
-				<th>Kategori:</th>
-				<td>{{ contract.category }}</td>
+				<th>Selskap:</th>
+				<td>{{ contract.company }}</td>
 			</tr>
 			<tr>
 				<th>Budsjett:</th>

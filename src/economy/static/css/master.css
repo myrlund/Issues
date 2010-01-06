@@ -83,6 +83,9 @@ h1 {
 	position: relative;
 	top: 3px;
 }
+#toolbar p {
+	margin: 3px 0;
+}
 
 #project_info .field {
 	float: left;
@@ -185,6 +188,9 @@ a.new.invoice {
 a.new.contract {
 	background-image: url(/static/gfx/script_add.png);
 }
+a.edit.project {
+	background-image: url(/static/gfx/report_edit.png);
+}
 a.doneediting {
 	background-image: url(/static/gfx/lock.png);
 }
@@ -206,6 +212,23 @@ td.tools div {
 }
 th.tools div, td.tools div {
 	width: 70px;
+}
+.tools.searchbox input {
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	padding: 3px;
+	padding-left: 22px;
+	background: #fff url(/static/gfx/zoom.png) no-repeat left center;
+	background-position: 3px center;
+	margin: 0;
+	border-color: #bbb;
+}
+.tools.searchbox input.focus {
+	border-color: #777;
+}
+.floatright {
+	display: block;
+	float: right;
 }
 
 tr.budget_sums {
@@ -310,10 +333,16 @@ table.overview {
 	min-width: 1000px;
 }
 
+.tabcontent table.grid {
+	width: 100%;
+}
+
 table td, table th {
 	padding: .3em .5em;
-	border: 1px solid #bbb;
 	text-align: left;
+}
+table.grid td, table.grid th {
+	border: 1px solid #bbb;
 }
 tr.quickedit td {
 	background-color: #eee;
@@ -384,6 +413,14 @@ input[type=text], textarea {
 	border: 1px solid #777;
 	padding: 2px 3px;
 	color: #111;
+}
+.inline {
+	display: block;
+	float: left;
+}
+button.inline {
+	height: 21px;
+	margin-left: 2px;
 }
 
 

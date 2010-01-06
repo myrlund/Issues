@@ -1,0 +1,15 @@
+{% extends "form.html" %}
+
+{% block inner_title %}
+	<h1>Rediger prosjekt</h1>
+{% endblock %}
+
+{% block inner_content %}
+	<form action="" method="post">
+		<table class="form">
+			{{ form.as_table }}
+		</table>
+		
+		<input type="submit" value="Lagre" /> &nbsp; <a href="{{ project.get_absolute_url }}" class="cancel">avbryt</a>
+	</form>
+{% endblock %}

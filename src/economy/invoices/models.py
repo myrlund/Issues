@@ -30,6 +30,10 @@ class Invoice(BaseModel):
             amount += invoice.amount
         return {"amount": amount}
     
+    @staticmethod
+    def get_search_fields():
+        return ["number", "description", "comment"]
+    
     def get_edit_url(self):
         return self.get_url("edit")
     
@@ -39,7 +43,7 @@ class Invoice(BaseModel):
     @models.permalink
     def get_url(self, action):
         return ('economy.invoices.views.%s_invoice' % action, (), {
-            'project_id': self.contract.project.id,
+            'project_id': self.contract.project.number,
             'contract_code': self.contract.code,
             'number': self.number,
         })
@@ -49,6 +53,7 @@ class Invoice(BaseModel):
     
     class Meta:
         ordering = ["-date", "contract", "-number"]
+        unique_together = ("number", "contract",)
         
 class InvoiceForm(ModelForm):
     class Meta:
@@ -77,6 +82,7 @@ class Change(BaseModel):
     number = models.PositiveIntegerField('nummer')
     invoiced = models.BooleanField('fakturert?', default=False)
     description = models.TextField('beskrivelse', blank=True)
+    comment = models.TextField('kommentar', blank=True)
     status = models.ForeignKey(ChangeStatus)
     # status = models.ManyToManyField(ChangeStatus, through="ChangeStatusDate")
     timediff = models.IntegerField('tidskrav', blank=True, default=0, help_text='dager') # Days
@@ -107,6 +113,10 @@ class Change(BaseModel):
             timediff += change.timediff
         return {"amount": amount, "timediff": timediff}
     
+    @staticmethod
+    def get_search_fields():
+        return ["number", "description", "comment", "status__title"]
+    
     def get_statuses(self):
         return ChangeStatus.objects.all()
     
@@ -131,13 +141,13 @@ class Change(BaseModel):
     @models.permalink
     def get_url(self, action):
         return ('economy.invoices.views.%s_change' % action, (), {
-            'project_id': self.contract.project.id,
+            'project_id': self.contract.project.number,
             'contract_code': self.contract.code,
             'number': self.number,
         })
     
     class Meta:
-        ordering = ["contract__code"] # __date, "-status__status"
+        ordering = ["number"] # __date, "-status__status"
 
 class ChangeForm(ModelForm):
     class Meta:

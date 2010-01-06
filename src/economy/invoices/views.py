@@ -2,18 +2,20 @@
 
 from economy.invoices.models import *
 from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.db.models import Max
 from economy.contract.models import Contract
 from economy.contract.helpers import *
 from django.shortcuts import render_to_response
 
 def form(request, project_id, contract_code, model, form_class, number=None):
+    contract = load_contract(contract_code)
     dateform = None
     if request.REQUEST.has_key("next"):
         next = request.REQUEST["next"]
     else:
         next = None
     if number:
-        instance = model.objects.get(number=int(number))
+        instance = model.objects.get(contract=contract, number=int(number))
     else:
         contract = load_contract(contract_code)
         if not contract:
@@ -97,6 +99,20 @@ def getstatusdate(request, change_id, status):
         return HttpResponse(datetime.strftime(change.status_date(status).date, "%Y-%m-%d"))
     except Exception as e:
         return HttpResponse("En intern feil oppsto: %s" % e)
+
+def getchangenumber(request, contract_id):
+    try:
+        contract = Contract.objects.get(id=contract_id)
+    except:
+        raise Http404()
+    try:
+        numbers = Change.objects.filter(contract=contract).aggregate(max=Max("number"))
+        print numbers
+        n = (numbers["max"] or 0) + 1
+    except Exception as e:
+        print e
+        n = 1
+    return HttpResponse(n)
 
 def set_invoiced(request, change_id):
     change = get_change(change_id)

@@ -8,52 +8,40 @@
 	<div class="tabcontent">
 		<div id="invoices">
 			{% if contract.get_invoices %}
-				{% include "invoice/newlink.html" %}
-				<table class="invoices grid">
-					{% include "invoice/table_headers.html" %}
-					{% for invoice in contract.get_invoices %}
-						{% include "invoice/row.html" %}
-					{% endfor %}
-					<tr class="sumrow">
-						<td colspan="4">Totalt</td>
-						<td class="number">{{ contract.total_invoices|default:"0" }}</td>
-					</tr>
+				<p class="tools searchbox floatright">
+					<input class="search textbox" type="text" name="q" value="{{ iq }}" id="iq" onfocus="$(this).addClass('focus')" onblur="$(this).removeClass('focus')" onkeyup="ajaxSearch(this, 'invoice', '{{ isortby|default:"" }}', '{{ quickedit }}')" />
+				</p>
+				<p class="tools">{% if not contract.get_invoices %}Ingen fakturaer registrert. {% endif %}<a class="icon new invoice" href="{{ contract.new_invoice_url }}">Registrer ny faktura</a></p>
+				<table id="invoice_list" class="invoices grid">
+					{% include "invoice/invoices_list.html" %}
 				</table>
 			{% endif %}
 			<div class="{% if not contract.get_invoices %}inner{% endif %}">
-				{% include "invoice/newlink.html" %}
+				<p class="tools">{% if not contract.get_invoices %}Ingen fakturaer registrert. {% endif %}<a class="icon new invoice" href="{{ contract.new_invoice_url }}">Registrer ny faktura</a></p>
 			</div>
 		</div>
 		<div id="changes">
-			<p class="tools {% if not contract.get_changes %}inner{% endif %}">
-				<a class="icon new change" href="{{ contract.new_change_url }}">Registrer ny endring</a>
-				{% if contract.get_changes %}
-					{% if quickedit %}
-						<a class="icon doneediting" href="{{ contract.get_absolute_url }}#changes">Avslutt hurtigredigering</a>
-					{% else %}
-						<a class="icon edit change" href="?quickedit#changes">Hurtigredigering</a>
-					{% endif %}
-				{% endif %}
-				<div class="clearer"></div>
-			</p>
 			{% if contract.get_changes %}
-				<table class="invoices grid">
-					{% include "change/table_headers.html" %}
-					{% for change in contract.get_changes %}
+				<p class="tools searchbox floatright">
+						<input class="search textbox" type="text" name="q" value="{{ cq }}" id="cq" onfocus="$(this).addClass('focus')" onblur="$(this).removeClass('focus')" onkeyup="ajaxSearch(this, 'change', '{{ csortby|default:"" }}', '{{ quickedit }}')" />
+				</p>
+			{% endif %}
+			<div class="{% if not contract.get_changes %}inner{% endif %}">
+				<p class="tools">
+					<a class="icon new change" href="{{ contract.new_change_url }}">Registrer ny endring</a>
+					{% if contract.get_changes %}
 						{% if quickedit %}
-							{% include "change/row_quickedit.html" %}
+							<a class="icon doneediting" href="{{ contract.get_absolute_url }}?csortby={{csortby}}#changes">Avslutt hurtigredigering</a>
 						{% else %}
-							{% include "change/row.html" %}
+							<a class="icon edit change" href="?csortby={{csortby}}&amp;quickedit#changes">Hurtigredigering</a>
 						{% endif %}
-					{% endfor %}
-					{% if not quickedit %}
-						<tr class="sumrow">
-							<td colspan="6">Totalt</td>
-							<td class="number">{{ contract.total_changes.timediff|default:"0" }} dager</td>
-							<td class="number">{{ contract.total_accepted_changes.amount|default:"0" }}</td>
-							<td class="number">{{ contract.total_pending_changes.amount|default:"0" }}</td>
-						</tr>
 					{% endif %}
+					<div class="clearer"></div>
+				</p>
+			</div>
+			{% if contract.get_changes %}
+				<table id="change_list" class="invoices grid">
+					{% include "change/change_list.html" %}
 				</table>
 				<p class="tools">
 					<a class="icon new change" href="{{ contract.new_change_url }}">Registrer ny endring</a>

@@ -11,7 +11,7 @@ from economy.core.models import BaseModel
 # from economy.invoices.models import Change, Invoice 
 
 class Project(BaseModel):
-    id = models.PositiveIntegerField("prosjektnummer", primary_key=True)
+    number = models.PositiveIntegerField("prosjektnummer", unique=True)
     title = models.CharField("tittel", max_length=70, blank=True, default="Uten navn")
     tax_rate = models.DecimalField(u"MVA-nivå", max_digits=4, blank=True, decimal_places=2, default="25.0", help_text="Oppgi i prosent") # 00.00-99.99 in percent
     
@@ -26,16 +26,36 @@ class Project(BaseModel):
     
     @models.permalink
     def get_absolute_url(self):
-        return ('economy.contract.views.list_contracts', (self.id,))
+        return ('economy.contract.views.list_contracts', (self.number,))
+    
+    @models.permalink
+    def get_edit_url(self):
+        return ('economy.contract.views.edit_project', (self.number,))
     
     @models.permalink
     def new_contract_url(self):
         print "Min id:", self.id
-        return ('economy.contract.views.new_contract', (), {'project_id': self.id})
+        return ('economy.contract.views.new_contract', (), {'project_id': self.number})
+    
+    def calculate_category_sums(self, date_query=None):
+        categories = []
+        for category in ContractCategory.objects.all():
+            contracts = self.contract_set.filter(category=category)
+            if date_query:
+                contracts = contracts.filter(date_query)
+            sums = contracts.aggregate(changes=Sum("change__amount"), invoices=Sum("invoice__amount"), amount=Sum("amount"), budget=Sum("budget"))
+            data = {"title": category.title, "contracts": contracts, "sums": sums}
+            categories.append(data)
+        total = self.contract_set.aggregate(changes=Sum("change__amount"), invoices=Sum("invoice__amount"), amount=Sum("amount"), budget=Sum("budget"))
+        return {"categories": categories, "total": total}
     
     class Meta:
         ordering = ["title"]
-        
+
+class ProjectForm(ModelForm):
+    class Meta:
+        model = Project
+        exclude = ("pub_date", "mod_date",)
 
 class ContractCategory(BaseModel):
     title = models.CharField(max_length=50)
@@ -73,7 +93,7 @@ class Contract(BaseModel):
     
     def total_invoices(self):
         sum = self.invoice_set.aggregate(amount=Sum("amount"))
-        return sum["amount"]
+        return sum["amount"] or 0
     
     def total_changes(self):
         accepted = self.change_set.filter(status__short=settings.ACCEPTED_SHORT).aggregate(amount=Sum("amount"), timediff=Sum("timediff"))
@@ -87,7 +107,12 @@ class Contract(BaseModel):
         return invoices + changes
     
     def total_percent(self):
-        total = (1.0 * self.total_invoices()) / self.total_sum()
+        if self.total_sum() != 0:
+            total = (100.0 * self.total_invoices()) / self.total_sum()
+        else:
+            total = 0
+        
+        print "%d / %d = %f" % (self.total_invoices(), self.total_sum(), total)
         if total and total > 0:
             return total
         else:
@@ -99,7 +124,7 @@ class Contract(BaseModel):
     @models.permalink
     def get_url(self, action):
         return ('economy.contract.views.%s_contract' % action, (), {
-            'project_id': self.project.id,
+            'project_id': self.project.number,
             'contract_code': self.code,
         })
     
@@ -112,7 +137,7 @@ class Contract(BaseModel):
     @models.permalink
     def new_subobject_url(self, type):
         return ('economy.invoices.views.new_%s' % type, (), {
-            'project_id': self.project.id,
+            'project_id': self.project.number,
             'contract_code': self.code,
         })
     
