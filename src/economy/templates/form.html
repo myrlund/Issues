@@ -15,8 +15,8 @@
 			{{ form.as_table }}
 		</table>
 		
-		<input type="submit" value="Lagre" />{% if cancel %} &nbsp; <a href="{{ cancel }}" class="cancel">avbryt</a>{% endif %}
-		<a href="{% if instance.pk %}{{ instance.get_absolute_url }}{% else %}{{ contract.get_absolute_url }}{% endif %}">avbryt</a>
+		<input type="submit" value="Lagre" />
+		<a href="{{ contract.get_absolute_url }}">avbryt</a>
 	</form>
 {% endblock %}
 

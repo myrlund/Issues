@@ -8,14 +8,22 @@ from economy.contract.helpers import *
 from django.shortcuts import render_to_response
 
 def form(request, project_id, contract_code, model, form_class, number=None):
-    contract = load_contract(contract_code)
+    project = load_project(project_id)
+    contract = load_contract(contract_code, project)
+    print contract
     dateform = None
     if request.REQUEST.has_key("next"):
         next = request.REQUEST["next"]
     else:
         next = None
     if number:
-        instance = model.objects.get(contract=contract, number=int(number))
+        try:
+            if model == Change:
+                instance = model.objects.get(contract=contract, number=int(number))
+            if model == Invoice:
+                instance = model.objects.get(contract=contract, id=int(number))
+        except model.DoesNotExist:
+            raise Http404()
     else:
         contract = load_contract(contract_code)
         if not contract:
@@ -45,7 +53,7 @@ def form(request, project_id, contract_code, model, form_class, number=None):
         form = form_class(instance=instance)
         if model == Change:
             dateform = ChangeStatusDateForm(instance=instance.status_date()) 
-    return render_contract_response(get_template_dir(model)+"form.html", contract_code, {
+    return render_contract_response(get_template_dir(model)+"form.html", contract_code, project_id, {
         "instance": instance,
         "dateform": dateform, 
         "form": form,
@@ -59,6 +67,7 @@ def list(request, project_id, contract_code, model):
     }, request)
 
 def show(request, project_id, contract_code, cls, number):
+    project = load_project(project_id)
     model = cls.objects.get(contract__project__id=project_id, contract__code=contract_code, number=number)
     return render_contract_response(get_template_dir(cls)+"show.html", contract_code, {cls.__name__.lower(): model}, request)
 

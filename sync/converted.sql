@@ -1,4 +1,3 @@
-BEGIN TRANSACTION;
 INSERT INTO invoices_changestatusdate (status_id, change_id, mod_date, date, pub_date) VALUES ("5", "20", "2009-07-17 00:00:00", "2009-07-15", "2009-07-17 00:00:00");
 INSERT INTO invoices_changestatusdate (status_id, change_id, mod_date, date, pub_date) VALUES ("0", "0", "2009-07-18 13:24:59", "2016-07-20", "2009-07-18 13:24:59");
 INSERT INTO invoices_changestatusdate (status_id, change_id, mod_date, date, pub_date) VALUES ("5", "19", "2009-07-18 13:36:19", "2009-07-16", "2009-07-18 13:36:19");
@@ -856,4 +855,3 @@ INSERT INTO contract_project (title, number, tax_rate, mod_date, pub_date, id) V
 INSERT INTO contract_project (title, number, tax_rate, mod_date, pub_date, id) VALUES ("Uten tittel", 10456, "0.25", "0000-00-00 00:00:00", "0000-00-00 00:00:00", 9);
 INSERT INTO contract_project (title, number, tax_rate, mod_date, pub_date, id) VALUES ("Uten tittel", 10356, "0.25", "0000-00-00 00:00:00", "0000-00-00 00:00:00", 10);
 INSERT INTO contract_project (title, number, tax_rate, mod_date, pub_date, id) VALUES ("Uten tittel", 10399, "0.25", "0000-00-00 00:00:00", "0000-00-00 00:00:00", 11);
-COMMIT;

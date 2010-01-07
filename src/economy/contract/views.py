@@ -11,7 +11,8 @@ from django.template.context import RequestContext
 
 from economy.contract.models import * #@UnusedWildImport
 from economy.invoices.models import Invoice, Change
-from economy.contract.helpers import render_project_response, load_project
+from economy.contract.helpers import render_project_response, load_project,\
+    load_contract
 
 def project_overview(request):
     projects = Project.objects.all()
@@ -50,10 +51,8 @@ def normal_report(request, project, date_query=None):
 
 def show_contract(request, project_id, contract_code):
     project = load_project(project_id)
-    try:
-        contract = Contract.objects.get(project=project, code=contract_code)
-    except Contract.DoesNotExist:
-        raise Http404()
+    contract = load_contract(contract_code, project)
+    
     csortby = None
     isortby = None
     if request.GET.has_key("csortby") and len(request.GET["csortby"]):
