@@ -159,7 +159,7 @@ class Change(BaseModel):
         return ('economy.invoices.views.%s_change' % action, (), {
             'project_id': self.contract.project.number,
             'contract_code': self.contract.code,
-            'number': self.number,
+            'number': self.id,
         })
     
     class Meta:

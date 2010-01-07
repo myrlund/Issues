@@ -18,10 +18,7 @@ def form(request, project_id, contract_code, model, form_class, number=None):
         next = None
     if number:
         try:
-            if model == Change:
-                instance = model.objects.get(contract=contract, number=int(number))
-            if model == Invoice:
-                instance = model.objects.get(contract=contract, id=int(number))
+            instance = model.objects.get(contract=contract, id=int(number))
         except model.DoesNotExist:
             raise Http404()
     else:
