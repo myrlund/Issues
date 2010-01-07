@@ -34,6 +34,10 @@ class Invoice(BaseModel):
     def get_search_fields():
         return ["number", "description", "comment"]
     
+    @staticmethod
+    def get_sort_fields():
+        return ["number", "date", "description", "comment", "amount"]
+    
     def get_edit_url(self):
         return self.get_url("edit")
     
@@ -53,7 +57,7 @@ class Invoice(BaseModel):
     
     class Meta:
         ordering = ["-date", "contract", "-number"]
-        unique_together = ("number", "contract",)
+        # unique_together = ("number", "contract",)
         
 class InvoiceForm(ModelForm):
     class Meta:
@@ -105,6 +109,14 @@ class Change(BaseModel):
         return u"EA%d" % self.number
     
     @staticmethod
+    def get_accepted_query():
+        return Q(status__short=settings.ACCEPTED_SHORT)
+    
+    @staticmethod
+    def get_pending_query():
+        return ~Q(status__short=settings.ACCEPTED_SHORT)
+    
+    @staticmethod
     def sum(changes):
         amount = 0
         timediff = 0
@@ -116,6 +128,10 @@ class Change(BaseModel):
     @staticmethod
     def get_search_fields():
         return ["number", "description", "comment", "status__title"]
+    
+    @staticmethod
+    def get_sort_fields():
+        return ["number", "invoiced", "status", "description", "comment", "timediff", "amount"]
     
     def get_statuses(self):
         return ChangeStatus.objects.all()

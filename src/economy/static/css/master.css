@@ -152,7 +152,14 @@ a.cancel:hover {
 input#id_date, input.datepicker {
 	width: 71px;
 }
+input.disabled {
+	background: #ddd;
+	border-color: #333;
+}
 
+.ui-datepicker {
+	z-index: 5000;
+}
 .ui-datepicker-trigger {
 	margin-left: 2px;
 	position: relative;
@@ -190,6 +197,9 @@ a.new.contract {
 }
 a.edit.project {
 	background-image: url(/static/gfx/report_edit.png);
+}
+a.generate.report {
+	background-image: url(/static/gfx/table_gear.png);
 }
 a.doneediting {
 	background-image: url(/static/gfx/lock.png);

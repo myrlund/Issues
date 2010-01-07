@@ -1,6 +1,7 @@
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 
+from django.conf import settings 
 from economy.contract.models import Project, Contract
 
 def get_template_dir(model):

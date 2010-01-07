@@ -1,4 +1,5 @@
 {% extends "report.html" %}
+{% load currency %}
 
 {% block contents %}
 	
@@ -37,16 +38,16 @@
 						<tr>
 							<td class="">{{ contract }}</td>
 							<td class="">{{ contract.company }}</td>
-							<td class="number">{{ contract.budget }}</td>
-							<td class="number">{{ contract.amount }}</td>
+							<td class="number">{{ contract.budget|currency }}</td>
+							<td class="number">{{ contract.amount|currency }}</td>
 						
-							<td class="number">{{ contract.total_accepted_changes.amount|default:"0" }}</td>
-							<td class="number">{{ contract.total_pending_changes.amount|default:"0" }}</td>
+							<td class="number">{{ contract.total_accepted_changes.amount|currency }}</td>
+							<td class="number">{{ contract.total_pending_changes.amount|currency }}</td>
 						
-							<td class="number">{{ contract.total_sum }}</td>
-							<td class="number">{{ contract.total_invoices }}</td>
-							<td class="number">{{ contract.total_percent|stringformat:".1f" }}&nbsp;%</td>
-							<td class="number">{{ contract.total_remaining }}</td>
+							<td class="number">{{ contract.total_sum|currency }}</td>
+							<td class="number">{{ contract.total_invoices|currency }}</td>
+							<td class="number">{{ contract.total_percent|currency:1 }}&nbsp;%</td>
+							<td class="number">{{ contract.total_remaining|currency }}</td>
 						
 							<td class="">{{ contract.comment }}</td>
 						</tr>

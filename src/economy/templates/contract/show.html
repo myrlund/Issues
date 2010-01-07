@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load currency %}
 
 {% block extra_headers %}
 	{% if quickedit %}
@@ -29,11 +30,11 @@
 			</tr>
 			<tr>
 				<th>Budsjett:</th>
-				<td>{{ contract.budget }}</td>
+				<td>{{ contract.budget|currency }}</td>
 			</tr>
 			<tr>
 				<th>Kontraktsbeløp:</th>
-				<td>{{ contract.amount }}</td>
+				<td>{{ contract.amount|currency }}</td>
 			</tr>
 			<tr>
 				<th>Kommentar:</th>

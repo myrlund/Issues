@@ -1,3 +1,4 @@
+{% load currency %}
 {% include "change/table_headers.html" %}
 {% for change in changes %}
 	{% if quickedit %}
@@ -10,7 +11,7 @@
 	<tr class="sumrow">
 		<td colspan="6">Totalt</td>
 		<td class="number">{{ cdata.timediff|default:"0" }} dager</td>
-		<td class="number">{{ cdata.accepted|default:"0" }}</td>
-		<td class="number">{{ cdata.pending|default:"0" }}</td>
+		<td class="number">{{ cdata.accepted|currency }}</td>
+		<td class="number">{{ cdata.pending|currency }}</td>
 	</tr>
 {% endif %}

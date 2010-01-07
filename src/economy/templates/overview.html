@@ -1,12 +1,13 @@
 {% extends "base.html" %}
+{% load currency %}
 
 {% block edit_tools %}
 	<a href="{{ project.get_edit_url }}" class="tool edit project">Rediger prosjektinfo</a>
+	<a href="javascript:openReportDialog()" onclick="openReportDialog();return false;" class="tool generate report">Generér rapport</a>
 	<a href="{{ project.new_contract_url }}" class="tool new contract">Ny kontrakt</a>
 {% endblock %}
 
 {% block content %}
-	{% regroup project.contracts by category as categories %}
 	<table class="overview grid">
 		<thead>
 			<tr>
@@ -28,24 +29,24 @@
 				<th class="number">%</th>
 			</tr>
 		</thead>
-		{% for cat in categories %}
-			{% if cat.list %}
+		{% for category in categories %}
+			{% if category.contracts %}
 				<tbody>
 					<tr>
-						<th colspan="11">{{ cat.grouper }}</th>
+						<th colspan="11">{{ category.title }}</th>
 					</tr>
-					{% for contract in cat.list %}
+					{% for contract in category.contracts %}
 						<tr class="clickable contract" onDblClick="window.location = '{{ contract.get_absolute_url }}';">
 							<td>{{ contract.code }}</td>
 							<td>{{ contract.company }}</td>
-							<td class="number">{{ contract.budget }}</td>
-							<td class="number">{{ contract.amount }}</td>
-							<td class="number">{{ contract.total_changes.accepted.amount|default:"0" }}</td>
-							<td class="number">{{ contract.total_changes.pending.amount|default:"0" }}</td>
-							<td class="number">{{ contract.total_sum|default:"0" }}</td>
-							<td class="number">{{ contract.total_invoices|default:"0" }}</td>
-							<td class="number">{{ contract.total_percent|stringformat:".1f" }}&nbsp;%</td>
-							<td class="number">{{ contract.total_remaining|default:"0" }}</td>
+							<td class="number">{{ contract.budget|currency }}</td>
+							<td class="number">{{ contract.amount|currency }}</td>
+							<td class="number">{{ contract.total_changes.accepted.amount|currency }}</td>
+							<td class="number">{{ contract.total_changes.pending.amount|currency }}</td>
+							<td class="number">{{ contract.total_sum|currency }}</td>
+							<td class="number">{{ contract.total_invoices|currency }}</td>
+							<td class="number">{{ contract.total_percent|currency:1 }}&nbsp;%</td>
+							<td class="number">{{ contract.total_remaining|currency }}</td>
 							<td>{{ contract.comment }}</td>
 						</tr>
 					{% endfor %}
@@ -54,6 +55,64 @@
 		{% endfor %}
 		
 	</table>
+	<div id="reportDialog" style="display: none;" title="Opprett rapport">
+		<form action="{% url report project.number %}" method="get" id="reportform">
+			<table class="form">
+				<tr>
+					<th>Rapportmal:</th>
+					<td>
+						<select name="type" id="">
+							<option value="" selected="selected">Per prosjekt</option>
+							<option value="ns">Bygningsdelstabell</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>Fra dato:</th>
+					<td>
+						<span class="floatingcheckbox">
+							<input type="checkbox" name="from_date_on" onclick="toggleEnabled('#from_date', this)" />
+						</span>
+						<span class="floatingdatebox">
+							<input class="datepicke disabled" type="text" name="from_date" value="" id="from_date" disabled="disabled" />
+						</span>
+					</td>
+				</tr>
+				<tr>
+					<th>Til dato:</th>
+					<td>
+						<span class="floatingcheckbox">
+							<input type="checkbox" name="to_date_on" onclick="toggleEnabled('#to_date', this)" />
+						</span>
+						<span class="floatingdatebox">
+							<input class="datepicke disabled" type="text" name="to_date" value="" id="to_date" disabled="disabled" />
+						</span>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+{% endblock %}
+{% block extra_headers %}
+	<script type="text/javascript">
+	<!--
+		var openReportDialog = function() {
+			$("#reportDialog").dialog({
+				modal: true,
+				resizable: false,
+				dialogClass: "generate report",
+				buttons: {
+					"Opprett": function(){
+						$("#reportform").submit();
+					},
+					// "Avbryt": function(){
+					// 	$(this).dialog("close");
+					// },
+				}
+			});
+		}
+	// -->
+	</script>
 {% endblock %}
 
 

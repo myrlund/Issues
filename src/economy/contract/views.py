@@ -1,3 +1,5 @@
+# -*- coding: utf8 -*-
+
 from django.http import HttpResponseRedirect, Http404, HttpResponse
     
 import re
@@ -16,8 +18,10 @@ def project_overview(request):
     return render_to_response("root.html", {"projects": projects}, RequestContext(request))
 
 def list_contracts(request, project_id):
-    pagetitle = "Sammenstilling og overordnet budsjett - sluttprognose"
-    return render_project_response("overview.html", project_id, {"pagetitle": pagetitle}, request)
+    project = load_project(project_id)
+    data = project.calculate_category_sums()
+    data["pagetitle"] = "Sammenstilling og overordnet budsjett - sluttprognose"
+    return render_project_response("overview.html", project_id, data, request)
 
 def report(request, project_id):
     project = load_project(project_id)
@@ -34,15 +38,22 @@ def report(request, project_id):
         return normal_report(request, project, date_query)
 
 def ns_report(request, project, date_query=None):
-    raise Http404()
+    # Hent gruppert på første tegn
+    data = project.calculate_ns_sums()
+    return render_to_response("report/ns.html", data, RequestContext(request))
 
 def normal_report(request, project, date_query=None):
+    #@todo: Datofiltrering funker ikke skikkelig
     data = project.calculate_category_sums(date_query=date_query)
     # data = {"categories": categories, "total": total}
     return render_to_response("report/normal.html", data, RequestContext(request))
 
 def show_contract(request, project_id, contract_code):
-    contract = Contract.objects.get(code=contract_code)
+    project = load_project(project_id)
+    try:
+        contract = Contract.objects.get(project=project, code=contract_code)
+    except Contract.DoesNotExist:
+        raise Http404()
     csortby = None
     isortby = None
     if request.GET.has_key("csortby") and len(request.GET["csortby"]):
@@ -53,13 +64,13 @@ def show_contract(request, project_id, contract_code):
     if request.GET.has_key("highlight"):
         highlight = request.GET["highlight"]
     
-    try:
+    if isortby in Invoice.get_sort_fields():
         invoices = contract.invoice_set.order_by(isortby)
-    except:
+    else:
         invoices = contract.invoice_set.all()
-    try:
+    if csortby in Change.get_sort_fields():
         changes = contract.change_set.order_by(csortby)
-    except:
+    else:
         changes = contract.change_set.all()
     
     # Search through sorted elements

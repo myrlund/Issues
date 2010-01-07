@@ -48,6 +48,18 @@ var popup = function(url) {
 	window.open(url,"Homepage","resizable=no,status=yes,scrollbars=yes,width=260,height=500");
 }
 
+var toggleEnabled = function(target, sender) {
+	sender.checked = false
+	alert("Ikke implementert ennå.");
+	return;
+	
+	// Working version
+	state = sender.checked
+	$(target).attr("disabled", !state);
+	if (state) $(target).removeClass("disabled");
+	else $(target).addClass("disabled");
+}
+
 var formatDateFields = function() {
 	var els = $("input.datepicker, .date input, form #id_date");
 	els.datepicker({
