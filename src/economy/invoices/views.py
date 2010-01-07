@@ -22,9 +22,6 @@ def form(request, project_id, contract_code, model, form_class, number=None):
         except model.DoesNotExist:
             raise Http404()
     else:
-        contract = load_contract(contract_code)
-        if not contract:
-            raise Http404()
         instance = model(contract=contract)
     
     error = False

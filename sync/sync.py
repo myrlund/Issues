@@ -103,6 +103,15 @@ for model, data in lines.iteritems():
 		sql += "\n"
 		sql += "INSERT INTO %s (%s) VALUES " % (model, ", ".join(data["rows"][0].keys()))
 		sql += "(%s)" % ", ".join([str(inst[f]) for f in data["rows"][0].keys()]) + ";"
+
+sql += "\n"
+sql += 'UPDATE contract_project SET pub_date="2010-01-07 00:00:00" WHERE pub_date="0000-00-00 00:00:00";\n'
+sql += 'UPDATE contract_project SET mod_date="2010-01-07 00:00:00" WHERE mod_date="0000-00-00 00:00:00";\n'
+
+# sqlite-specific shit
+if len(sys.argv) > 1 and sys.argv[1] == "sqlite":
+	sql += 'UPDATE invoices_change SET number = "0" WHERE number = "";\n'
+
 sql += "\nCOMMIT;"
 
 # print project_map
