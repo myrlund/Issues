@@ -32,7 +32,7 @@
 		<div id="toolbar">
 			<div class="section">
 				<a class="tool home" href="{{ project.get_absolute_url }}">Hjem</a>
-				<a class="tool print" href="#" onclick="print();return false;">Print</a>
+				{# <a class="tool print" href="#" onclick="print();return false;">Print</a> #}
 				{% if tools %}
 					{% for tool in tools %}
 						<a class="tool {{ tool.name }}" href="{{ tool.href }}" onclick="{{ tool.onclick }}">{{ tool.text }}</a>

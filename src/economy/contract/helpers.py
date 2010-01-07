@@ -26,7 +26,7 @@ def render_contract_response(template, contract_code, project_id, vars={}, reque
     project = load_project(project_id)
     contract = load_contract(contract_code, project)
     vars["contract"] = contract
-    return render_project_response(template, contract.project.id, vars, request)
+    return render_project_response(template, project_id, vars, request)
 
 def render_project_response(template, project_id, vars={}, request=None):
     project = load_project(project_id)
