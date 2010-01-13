@@ -1,6 +1,5 @@
 from django import template
 import locale
-# locale.setlocale(locale.LC_ALL, 'no_NO')
 register = template.Library()
  
 @register.filter()

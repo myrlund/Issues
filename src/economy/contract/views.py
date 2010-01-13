@@ -107,7 +107,7 @@ def contract_form(request, project_id, contract_code=None):
     project = load_project(project_id)
     contract = None
     if contract_code:
-        contract = Contract.objects.get(code=contract_code)
+        contract = Contract.objects.get(project=project, code=contract_code)
     else:
         contract = Contract(project=project)
     if request.method == "POST":
