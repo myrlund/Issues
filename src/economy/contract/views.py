@@ -108,8 +108,10 @@ def contract_form(request, project_id, contract_code=None):
     contract = None
     if contract_code:
         contract = Contract.objects.get(project=project, code=contract_code)
+        pagetitle = "Rediger kontrakt: %s" % str(contract)
     else:
         contract = Contract(project=project)
+        pagetitle = "Ny kontrakt"
     if request.method == "POST":
         form = ContractForm(request.POST, instance=contract)
         if form.is_valid():
@@ -120,7 +122,7 @@ def contract_form(request, project_id, contract_code=None):
     return render_project_response("contract/form.html", project_id, {
         "form": form,
         "contract": contract,
-        "pagetitle": "Ny kontrakt",
+        "pagetitle": pagetitle,
     }, request)
 
 def new_contract(request, project_id):
