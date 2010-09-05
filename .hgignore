@@ -1,8 +1,0 @@
-syntax: glob
-
-src/economy/settings.py
-*.pyc
-*.aux
-*.out
-*.log
-

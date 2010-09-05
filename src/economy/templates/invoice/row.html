@@ -1,8 +1,0 @@
-{% load currency %}
-<tr id="invoice_{{ invoice.id }}" class="clickable invoice" onDblClick="window.location = '{{ invoice.get_edit_url }}';">
-	<td class="number">{{ invoice.number }}</td>
-	<td class="date">{{ invoice.date }}</td>
-	<td>{{ invoice.description }}</td>
-	<td>{{ invoice.comment }}</td>
-	<td class="number">{{ invoice.amount|currency }}</td>
-</tr>
