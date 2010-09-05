@@ -1,7 +1,9 @@
+# -*- coding: utf8 -*-
+
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template.context import RequestContext
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponse
 
 from fokus.issue.models import Project, Contract
 
@@ -10,6 +12,7 @@ from fokus.issue.models import Project, Contract
 #########################
 
 def render_issue_response(request, tpl, vars={}):
+    vars["breadcrumb"] = breadcrumb(vars)
     return render_to_response("issues/%s" % tpl, vars, RequestContext(request))
 
 def render_project_response(request, tpl, project_number, vars={}):
@@ -57,7 +60,7 @@ class AuthMiddleware:
     def process_request(self, request):
         self.auto_login(request)
         if not request.user.is_authenticated():
-            raise HttpResponseForbidden()
+            return HttpResponse(u"Du er ikke logget inn. Vennligst åpne siden på nytt i SuperOffice.")
     
     def auto_login(self, request):
         if request.GET.has_key("username"):
@@ -78,6 +81,8 @@ def breadcrumb(vars):
     breadcrumb = None
     if vars.has_key('breadcrumb'):
         breadcrumb = vars['breadcrumb']
+    elif vars.has_key("pagetitle"):
+        breadcrumb = vars['pagetitle']
     if not breadcrumb:
         breadcrumb = []
     if not isinstance(breadcrumb, list):

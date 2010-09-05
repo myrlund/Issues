@@ -55,12 +55,12 @@
 					<div id="userbox">
 						Logget inn som {{ user }}.
 					</div>
-					<div id="search">
-						<form action="{% url search project.number %}" method="get">
-							<input type="search" name="q" placeholder="Søk"{% if q %} value="{{ q }}"{% endif %} />
-							<button type="submit">Søk</button>
-						</form>
-					</div>
+						<div id="search">
+							{% if project %}<form action="{% url search project.number %}" method="get">{% endif %}
+								<input type="search" name="q" placeholder="Søk"{% if q %} value="{{ q }}"{% endif %}{% if not project %} disabled="disabled"{% endif %} />
+								<button type="submit">Søk</button>
+							{% if project %}</form>{% endif %}
+						</div>
 				</div>
 				<nav id="breadcrumb">
 					<ul>

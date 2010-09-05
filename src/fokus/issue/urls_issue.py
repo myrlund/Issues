@@ -8,3 +8,6 @@ urlpatterns = patterns('fokus.issue.views',
     (r'^issue/(?P<issue_id>\d+)/$', 'issue_view'),
     (r'^issue/(?P<issue_id>\d+)/', include('fokus.issue.urls_single_issue')),
 )
+urlpatterns += patterns('',
+    url(r'^search/$', 'fokus.search.views.search', name='search'),
+)
