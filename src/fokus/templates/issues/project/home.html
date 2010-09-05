@@ -1,0 +1,30 @@
+{% extends "issues/base.html" %}
+
+{% load tools %}
+
+{% block content %}
+
+	{% article "Mine saker" "table" %}
+		{% with my_issues as issues %}
+			{% include "issues/issue/partials/table.html" %}
+		{% endwith %}
+	{% endarticle %}
+	
+	{% article "Alle åpne saker" "table" %}
+		{% with project.get_open_issues as issues %}
+			{% include "issues/issue/partials/table.html" %}
+		{% endwith %}
+	{% endarticle %}
+
+	{% article "Alle saker" "table" "True" %}
+		{% with project.get_all_issues as issues %}
+			{% include "issues/issue/partials/table.html" %}
+		{% endwith %}
+	{% endarticle %}
+
+{% endblock %}
+
+{% block tablesorter %}
+	, sortList: [[1,0]]
+{% endblock %}
+

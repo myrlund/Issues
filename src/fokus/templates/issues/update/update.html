@@ -1,0 +1,34 @@
+{% load update %}
+
+<div class="update" id="update-{{ update.id }}">
+	<div class="header">
+		Postet {{ update.pub_date|date }} klokken {{ update.pub_date|time }} av {{ update.posted_by }}
+	</div>
+	<div class="body">
+		{{ update.text|safe }}
+	</div>
+	<div class="attachments">
+		{% with update as parent %}
+			{% with parent.images.all as images %}
+				{% include "issues/attachment/images.html" %}
+			{% endwith %}
+		{% endwith %}
+	</div>
+	
+	<a class="icon reply" href="javascript:void(0)" onclick="toggleUpdateForm(this)">Svar</a>
+	{% if not update.updates.count %}
+		<a class="icon delete comment" href="{{ update.get_delete_url }}" onclick="return confirmClick('Er du sikker på at du vil slette denne oppdateringen?')">Slett</a>
+	{% endif %}
+	<div class="clearer"></div>
+	
+	<div class="update-form" style="display: none">
+		{% update_form update as update_form %}
+		<div><b>Svar:</b></div>
+		{% with update as parent %}
+			{% with update.reply_url as reply_url %}
+				{% include "issues/update/form.html" %}
+			{% endwith %}
+		{% endwith %}
+	</div>
+</div>
+{{ update.render_updates }}

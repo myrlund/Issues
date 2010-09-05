@@ -1,0 +1,18 @@
+{% extends "issues/base.html" %}
+
+{% load tools %}
+
+{% block content %}
+
+	{% article "Søk" "table" hide_search %}
+		<form action="" method="get">
+			<table>
+				{{ form.as_table }}
+				<td colspan="2">
+					<button type="submit">Søk</button>
+				</td>
+			</table>
+		</form>
+	{% endarticle %}
+
+{% endblock %}

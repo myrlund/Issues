@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+		
+		<script src="/static/scripts/jquery.js" type="text/javascript"></script>
+		<script src="/static/scripts/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script>
+		<script src="/static/scripts/jquery.ui.datepicker-no.js" type="text/javascript"></script>
+		<script src="/static/scripts/jquery.tablesorter.min.js" type="text/javascript"></script>
+		<script src="/static/scripts/slimbox2.js" type="text/javascript"></script>
+		
+		<script src="/static/scripts/issues.js" type="text/javascript"></script>
+		<script src="/static/scripts/dynamic-formsets.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			<!--
+			
+			var debug = function(str){
+			}
+			
+			$(document).ready(function(){
+				$('table.sortable').tablesorter({
+					textExtraction: function(node){
+						if ($(node).find("a, div").innerHTML)
+							return $(node).find("a, div").innerHTML;
+						else
+							return node.innerHTML;
+					}
+					{% block tablesorter %}
+					{% endblock tablesorter %}
+				});
+			});
+			
+			// -->
+		</script>
+		
+		<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.8.1/build/base/base-min.css" />
+		<link rel="stylesheet" type="text/css" href="/static/css/slimbox2.css" />
+		<link rel="stylesheet" type="text/css" href="/static/css/new_master.css" />
+		<link rel="stylesheet" type="text/css" href="/static/css/smoothness/jquery-ui-1.8.2.custom.css" />
+
+		{% block extra_headers %}
+		{% endblock %}
+		
+		<title>{{ pagetitle }}</title>
+	</head>
+	<body class="issues">
+		<div id="toparea" class="pagesection">
+			<div id="toptop">
+				<!--
+					http://jasonwyatt.tumblr.com/post/241004134/make-a-posh-search-field-with-semantic-html-and-css
+				-->
+				<div id="topright">
+					<div id="userbox">
+						Logget inn som {{ user }}.
+					</div>
+					<div id="search">
+						<form action="{% url search project.number %}" method="get">
+							<input type="search" name="q" placeholder="Søk"{% if q %} value="{{ q }}"{% endif %} />
+							<button type="submit">Søk</button>
+						</form>
+					</div>
+				</div>
+				<nav id="breadcrumb">
+					<ul>
+						{% for item in breadcrumb reversed %}
+							<li class="{% if forloop.last %}active{% endif %}">
+								{% if not item.no_link %}<a href="{{ item.get_absolute_url }}">{% endif %}
+									{{ item.title|safe }}
+								{% if not item.no_link %}</a>{% endif %}
+							</li>
+						{% endfor %}
+					</ul>
+				</nav>
+				<div class="clearer"></div>
+			</div>
+			<div id="toptabs">
+				{% if tools %}
+					<nav id="tools" class="tabs">
+						<ul>
+							{% for tool in tools %}
+								<li class="tool {{ tool.name }}">
+									<a href="{{ tool.href }}" onclick="{{ tool.onclick }}">{{ tool.text }}</a>
+								</li>
+							{% endfor %}
+						</ul>
+						<label class="tools">Verktøy:</label>
+						<div class="clearer"></div>
+					</nav>
+				{% endif %}
+				<nav id="primary" class="tabs">
+					<ul>
+						{% if tabs %}
+							{% for tab in tabs %}
+								<li class="{% if tab.active %}active{% endif %}">
+									<a href="{{ tab.href }}" onclick="{{ tab.onclick }}">{{ tab.text }}</a>
+								</li>
+							{% endfor %}
+						{% else %}
+							<li class="active"><a href="#">{{ breadcrumb|first|default:"Hjem" }}</a></li>
+						{% endif %}
+					</ul>
+					<div class="clearer"></div>
+				</nav>
+			</div>
+		</div>
+		
+		<div id="content" class="pagesection">
+			{% if messages %}
+				<div id="flash">
+					<ul>
+						{% for message in messages %}
+							<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+						{% endfor %}
+					</ul>
+				</div>
+			{% endif %}
+			{% block content %}
+				<article>
+					{% if pagetitle %}<h1><a href="#">{{ pagetitle }}</a></h1>{% endif %}
+					<section>
+						{% block inner_content %}
+							Dette er det indre innhold.
+						{% endblock %}
+					</section>
+				</article>
+				<!-- <article>
+					<h2 class="closed"><a href="#">Lukket del</a></h2>
+					<section style="display:none;">
+						Dette er en vanlig tekstblokk.
+					</section>
+				</article>
+				<article>
+					<p class="filtertoggle"><a href="#">filter</a></p>
+				
+					<h2><a href="#">Tabell</a></h2>
+				
+					<div class="filter" style="display: none">
+						FILTER
+					</div>
+					<section class="table">
+						<table>
+							<thead>
+								<tr>
+									<td>Kol. 1</td>
+									<td>Nr. 2</td>
+									<td>Og tre</td>
+									<td>Sum</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td colspan="4">Bare en test - gidder ikke fylle ut!</td>
+								</tr>
+							</tbody>
+						</table>
+						</table>
+					</section>
+				</article> -->
+			{% endblock %}
+			
+			<div id="footer">
+				<p>
+					Copyright &copy; 2010 <a href="mailto:myrlund[ÆTT]gmail.com">Jonas Myrlund</a>
+				</p>
+			</div>
+		</div>
+	</body>
+</html>

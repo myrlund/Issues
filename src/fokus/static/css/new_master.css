@@ -1,0 +1,609 @@
+/** NEW LAYOUT CSS :D **/
+
+body {
+	margin: 0;
+	font-family: "helvetica neue", arial, verdana, sans-serif;
+	
+	font-size: 87.5%;
+}
+
+a {
+	color: #004499;
+	outline: none;
+}
+a b, a strong {
+	color: #002277;
+	font-weight: normal;
+}
+a img {
+	border: none;
+}
+
+h1, h2, h3, h4 {
+	color: #049;
+}
+
+h1, h2, h3 {
+	font-size: 1.2em;
+	margin: .2em 0 .2em 0;
+}
+
+h4, h5 {
+	margin: 1em 0 0;
+	font-size: 1.0em;
+}
+
+h1 a, h2 a, h3 a {
+	color: #049;
+	background: url(/static/gfx/bullet_arrow_down.png) no-repeat left center;
+	padding-left: 1em;
+	text-decoration: none;
+}
+h1.closed a, h2.closed a, h3.closed a,
+article.closed h1 a, article.closed h2 a, article.closed h3 a {
+	background-image: url(/static/gfx/bullet_arrow_right.png);
+}
+article.closed section {
+/*	display: none !important;*/
+}
+
+.small {
+	font-size: .9em;
+}
+
+.info {
+	font-style: italic;
+}
+
+
+.pagesection {	
+	padding: 0 15px;
+}
+
+#toparea {
+	background: #dfdfdf;
+	border-bottom: 1px solid #999;
+}
+	#toptop {
+		padding: 10px 0 15px;
+	}
+		#topright {
+			width: 400px;
+			float: right;
+			text-align: right;
+		}
+			#userbox {
+				font-size: .9em;
+				margin-right: 15px;
+				float: left;
+				width: 135px;
+				padding: 5px 0;
+				color: #444;
+			}
+			#search {
+				float: left;
+				width: 250px;
+			}
+				#search input {
+					width: 88%;
+					padding: 4px 4px 4px 22px;
+					border: 1px #bbb solid;
+					background: #eee url(/static/gfx/magnifier.png) no-repeat 3px 4px;
+					font-size: 12px;
+					border-radius: 5px;
+					-moz-border-radius: 5px;
+					-webkit-border-radius: 5px;
+				}
+				#search input:focus {
+					border-color: #999;
+					background-color: #fff;
+				}
+				#search button {
+					display: none;
+					padding: 1px;
+					border: 1px #acddff solid;
+					background-color: #fffdfa;
+					outline: none;
+					margin: 0 5px 0 -75px;
+					width: 65px;
+				
+					font-size: 12px;
+				}
+		#breadcrumb {
+			font-size: 1.2em;
+		}
+			#breadcrumb ul {
+				padding: 0;
+				padding-top: 2px;
+				margin: 0;
+				list-style-type: none;
+			}
+				#breadcrumb li {
+					float: left;
+					margin: 0;
+					list-style-type: none;
+			
+					padding-right: 18px;
+					margin-right: 5px;
+					background: url(/static/gfx/breadcrumb_arrow.png) no-repeat right center;
+				}
+				#breadcrumb li.active {
+					padding-right: 0;
+					background: none;
+				}
+					#breadcrumb li a, #breadcrumb li a b {
+						color: #777;
+						text-decoration: none;
+					}
+					#breadcrumb li.active a, #breadcrumb li.active a b {
+						color: #333;
+					}
+
+	#toptabs {
+		font-size: 1em;
+	}
+		#tools {
+			float: right;
+			width: 50%;
+			text-align: right;
+		}
+			#tools label, #tools li {
+				float: right;
+			}
+				#tools li a {
+					margin: 0 0 0 4px;
+				}
+			#tools label {
+				margin: 3px 3px 0;
+				color: #777;
+			}
+		#primary {
+		}
+
+#content {
+	padding-top: 1em;
+}
+	#content section {
+		display: block;
+		border: 1px solid #bbb;
+		padding: 1em;
+		margin-bottom: 1em;
+	}
+	#content section.table {
+		padding: 0;
+		border: none;
+	}
+		#content section.table table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+			#content section.table table thead td,
+			#content section.table table thead th {
+				background: #dfdfdf;
+				text-align: left;
+			}
+			#content section.table table thead td a,
+			#content section.table table thead th a {
+				text-decoration: none;
+				color: #333;
+				font-weight: bold;
+			}
+			#content section.table table td,
+			#content section.table table th {
+				border: 1px solid #bbb;
+				font-weight: normal;
+			}
+			#content section.table table th {
+				cursor: default;
+			}
+	#content section.note {
+/*		background: #fcf0ad;*/
+/*		border-color: #ece09d;*/
+		color: #333;
+	}
+		#content section.note h1,
+		#content section.note h2,
+		#content section.note h3,
+		#content section.note a {
+			color: #027;
+		}
+		#content section.note header,
+		#content section.note section {
+			border: none;
+			padding: .5em 0;
+		}
+		#content section.note header {
+			display: block;
+			padding-top: 0;
+		}
+			#content section.note header h1,
+			#content section.note header h2,
+			#content section.note header h3 {
+				font-size: 1.6em;
+				border: none;
+				padding: 0;
+			}
+		#content section.note h1,
+		#content section.note h2,
+		#content section.note h3 {
+			border-top: 1px solid #bbb;
+			padding-top: .8em;
+			padding-bottom: .8em;
+		}
+		#content section.note section {
+			padding: 0 1em;
+		}
+			#content section.note section table {
+				width: 100%;
+				border-collapse: collapse;
+			}
+				#content section.note section table.twocol th {
+					width: 15%;
+				}
+				#content section.note section table.twocol td {
+					width: 35%;
+				}
+				#content section.note section table th,
+				#content section.note section table td {
+					border: none;
+					text-align: left;
+				}
+		
+
+	#content .filtertoggle {
+		float: right;
+		font-size: .8em;
+		margin: .35em 1em;
+	}
+		#content .filtertoggle a {
+			color: #777;
+			text-decoration: none;
+			border-bottom: 1px dotted #bbb;
+		}
+
+#footer {
+	text-align: center;
+	color: #777;
+	font-size: .8em;
+}
+	#footer a {
+		color: #666;
+		text-decoration: none;
+	}
+	#footer a:hover {
+		color: #333;
+		text-decoration: underline;
+	}
+
+table.sortable th.headerSortDown, table.sortable th.headerSortUp {
+	background: #eee no-repeat right center !important;
+}
+table.sortable th.headerSortDown {
+	background-image: url(/static/gfx/bullet_arrow_up.png) !important;
+}
+table.sortable th.headerSortUp {
+	background-image: url(/static/gfx/bullet_arrow_down.png) !important;
+}
+
+table.keyinfo.col2 td {
+	padding-right: 25px !important;
+}
+table.keyinfo.col2 th {
+	width: 140px;
+}
+
+table.form {
+	border-collapse: collapse;
+	width: 100%;
+}
+	table.form tr {
+		vertical-align: top;
+	}
+		table.form td, table.form th {
+			padding: .5em;
+			border: none;
+		}
+		table.form th {
+			width: 20%;
+			text-align: left;
+			font-weight: normal;
+		}
+		table.form .required td, table.form .required th {
+			font-weight: bold;
+		}
+			table.form th label {
+				display: block;
+				margin: 4px 0;
+			}
+
+ul.multiselect {
+	padding: 0;
+	margin: 0;
+}
+	ul.multiselect li {
+		list-style-type: none;
+	}
+		ul.multiselect li select, ul.multiselect li .controls {
+			float: left;
+		}
+		ul.multiselect .controls {
+			padding: 4px;
+			padding-left: 6px;
+		}
+
+ul.bulletless {
+	padding: 0;
+	margin-left: 0;
+	margin: 0;
+}
+	ul.bulletless li {
+		list-style-type: none;
+		margin: .2em 0;
+	}
+
+input[type=text], textarea {
+	border: 1px solid #999;
+	padding: 3px 5px;
+}
+
+
+ul.attachmentforms li.imageform {
+	clear: both;
+	list-style-type: none;
+	margin-bottom: 1.5em;
+}
+	ul.attachmentforms, ul.attachmentform, ul.attachmentform ul, ul.attachmentform li {
+		padding: 0;
+		margin: 0;
+		list-style-type: none;
+	}
+		ul.attachmentform li {
+			list-style-type: none;
+			float: left;
+			margin-right: 1em;
+		}
+		ul.attachmentform li {
+			padding: 5px 0;
+		}
+		ul.attachmentform li.image {
+			padding: 0;
+		}
+			ul.attachmentform li.image a {
+				display: block;
+				width: 50px;
+				height: 50px;
+				text-align: center;
+			}
+ul.attachmentforms li.imageform.add a {
+	display: block;
+	background: url(/static/gfx/add.png) no-repeat left center;
+	padding: 5px 0 5px 25px;
+	margin: 1.5em 0;
+}
+
+ul.image.attachments {
+	padding: 0;
+	margin: 0;
+}
+	ul.image.attachments li {
+		list-style-type: none;
+		float: left;
+		margin-right: 1em;
+	}
+	ul.image.attachments li a, table.hits td.image.resource a {
+		display: block;
+		border: 1px solid #bbb;
+		padding: .5em;
+	}
+	ul.image.attachments li a:hover {
+		border-color: #999;
+	}
+
+.tabs ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+	.tabs li {
+		list-style-type: none;
+		float: left;
+	}
+		.tabs li a {
+			display: block;
+			padding: 2px 10px;
+			text-decoration: none;
+			margin: 0 4px 0 0;
+			border: 1px solid #bbb;
+			border-bottom: none;
+			
+			background: #fff;
+			color: #004499;
+		}
+		.tabs li a:hover {
+			border-color: #999;
+		}
+		.tabs li.active a {
+/*			background: #004499;*/
+/*			color: #fff;*/
+			
+/*			background: #fff;*/
+/*			color: #333;*/
+			border-color: #999;
+			
+			margin-bottom: -1px;
+			border-bottom: none;
+			padding: 2px 10px 3px;
+		}
+
+
+.icon {
+	padding-left: 20px;
+	background: no-repeat left center;
+	color: #333 !important;
+	text-decoration: none;
+}
+	a.icon.bullet {
+		padding-left: 18px;
+		margin: .5em 0;
+	}
+		.icon.bullet.red {
+			background-image: url(/static/gfx/bullet_red.png);
+		}
+		.icon.bullet.yellow {
+			background-image: url(/static/gfx/bullet_yellow.png);
+		}
+		.icon.bullet.black {
+			background-image: url(/static/gfx/bullet_black.png);
+		}
+		.icon.bullet.blue {
+			background-image: url(/static/gfx/bullet_blue.png);
+		}
+		.icon.bullet.pink {
+			background-image: url(/static/gfx/bullet_pink.png);
+		}
+		.icon.bullet.purple {
+			background-image: url(/static/gfx/bullet_purple.png);
+		}
+		.icon.bullet.orange {
+			background-image: url(/static/gfx/bullet_orange.png);
+		}
+		.icon.bullet.green {
+			background-image: url(/static/gfx/bullet_green.png);
+		}
+		
+		.icon.priority-1 {
+			background-image: url(/static/gfx/priority_1.png);
+		}
+		.icon.priority-2 {
+			background-image: url(/static/gfx/priority_2.png);
+		}
+		.icon.priority-3 {
+			background-image: url(/static/gfx/priority_3.png);
+		}
+		
+		p.icon.bullet.floatright {
+			margin: 0;
+			margin-right: 15px;
+			display: inline;
+		}
+	a.icon.reply {
+		background-image: url(/static/gfx/comment_add.png);
+	}
+	a.icon.delete.comment {
+		background-image: url(/static/gfx/comment_delete.png);
+	}
+	a.icon.close.issues {
+		background-image: url(/static/gfx/tick.png);
+	}
+	a.icon.open.issues {
+		background-image: url(/static/gfx/book_open.png);
+	}
+
+/**********
+* UPDATES *
+*********/
+ol.updates {
+	padding-left: 0;
+	margin: 0;
+}
+	ol.updates ol {
+		padding-left: 1.5em;
+	}
+	ol.updates li.update {
+		list-style-type: none;
+		border-left: 2px solid #bbb;
+	}
+	ol.updates div.update {
+		margin: 1em 0;
+		padding: .5em 1em 0 1em;
+		
+/*		background: #ddd;*/
+	}
+		.update .header {
+			font-size: .8em;
+/*			text-align: right;*/
+		}
+		.update .body {
+			background: #fff;
+			padding: .5em 0 0;
+		}
+		.update a.icon {
+			color: #333 !important;
+			text-decoration: none;
+			font-size: .9em;
+			float: right;
+			margin: 3px;
+		}
+		.update .attachments fieldset {
+			margin-top: 1em;
+		}
+		.update-form .text textarea {
+			width: 50%;
+			height: 60px;
+		}
+
+/***********
+* MESSAGES *
+***********/
+
+#flash ul {
+	padding: 0;
+	margin: 0;
+	margin-bottom: 1em;
+}
+	#flash li {
+		background: #ddf;
+		border: 1px solid #779;
+		list-style-type: none;
+		padding: .5em 1em;
+		margin: .5em 0;
+	}
+		#flash li.success {
+			background: #dfd;
+			border-color: #5b5;
+		}
+		#flash li.error {
+			background: #fdd;
+			border-color: #b55;
+		}
+
+/*********
+* RANDOM *
+*********/
+
+fieldset {
+	border: 1px solid #bbb;
+}
+	fieldset legend {
+		font-size: .8em;
+		color: #555;
+	}
+
+.status-tools {
+	font-size: .9em;
+	text-align: right;
+	margin: .5em 0 1em;
+}
+	.status-tools a.icon {
+		margin-left: 1em;
+	}
+
+.hitfield {
+	color: #777;
+}
+	.hitfield b {
+		color: #333;
+	}
+
+table.hits td.image.resource {
+	width: 50px;
+}
+
+.floatright {
+	float: right;
+}
+
+.clearer {
+	clear: both;
+}
+

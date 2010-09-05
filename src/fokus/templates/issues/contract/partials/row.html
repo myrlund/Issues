@@ -1,0 +1,20 @@
+<tr>
+	<td class="number"><a href="{{ contract.get_absolute_url }}">{{ contract.code }}</a></td>
+	<td class=""><a href="{{ contract.get_absolute_url }}">{{ contract.company }}</a></td>
+	<td class="">
+		<a href="{% url issue_list project.number %}?code={{ contract.code }}">
+			{{ contract.get_all_issues|length }}
+		</a>
+	</td>
+	<td class="">
+		<a href="{% url list_by_status project.number,'open' %}?code={{ contract.code }}">
+			{{ contract.get_open_issues|length }}
+		</a>
+	</td>
+	<td class="">
+		<a href="{% url list_by_user project.number,user.username %}?code={{ contract.code }}">
+			{{ contract.my_issues|length }}
+		</a>
+	</td>
+	<td class=""><a href="{{ contract.get_new_issue_url }}">Ny sak</a></td>
+</tr>

@@ -1,0 +1,27 @@
+{% block subject %}
+Notifikasjon fra Fokus
+{% endblock %}
+####
+{{ user.full_name }},
+
+Denne notifikasjonen gjelder sak #{{ issue.id }}, {{ issue.subject }}, i prosjektet {{ issue.project }}.
+{% block message %}
+{{ message }}
+{% endblock %}
+Klikk her for å vise saken:
+{{ host }}{{ issue.get_absolute_url }}
+
+Tips: Prøv å koble opp VPN dersom siden ikke vises.
+
+Du mottar denne e-posten fordi du abonnerer på denne saken. Klikk på følgende lenke for ikke å motta flere notifikasjoner vedrørende denne saken:
+
+{{ host }}{% url denotify issue.project.number, issue.id, user.id %}?username={{ user.username }}
+
+Gjelder ikke denne saken deg? Klikk på følgende lenke for å fjerne deg som abonnent:
+
+{{ host }}{% url unsubscribe issue.project.number, issue.id, user.id %}?username={{ user.username }}
+
+-- 
+Dette er en autogenerert e-post. Vennligst ikke svar på denne.
+
+For spørsmål vedrørende systemet, vennligst kontakt Jonas Myrlund <mailto:myrlund@gmail.com>

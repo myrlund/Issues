@@ -1,0 +1,15 @@
+{% extends "issues/issue/notification.txt" %}
+
+{% block subject %}
+Oppdatering av sak #{{ issue.id }} {{ issue.subject }}
+{% endblock %}
+
+{% block message %}{% with object as update %}
+{{ update.posted_by.full_name }} oppdaterte saken {{ update.pub_date|date }}, klokken {{ update.pub_date|time }}:
+
+"{{ update.text|safe }}"
+
+{% if update.images.count %}
+{{ update.posted_by.full_name }} la ved {{ update.images.count }} bilde{{ update.images.count|pluralize:'r' }} i oppdateringen.
+{% endif %}{% endwith %}{% endblock %}
+

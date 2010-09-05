@@ -1,0 +1,16 @@
+{% load thumbnail %}
+
+{% if images.count %}
+	<fieldset id="images">
+		<legend>Bilder</legend>
+		<ul class="image attachments">
+			{% for image in images %}
+				<li>
+					<a href="{{ image.value.url|thumbnail:'width=800,height=600' }}" rel="lightbox-parent{{parent.id}}" title="{{ image.description }}">
+						<img src="{{ image.value.url|thumbnail:parent.thumb_size }}" alt="" title="{{ image.description }}" />
+					</a>
+				</li>
+			{% endfor %}
+		</ul>
+	</fieldset>
+{% endif %}

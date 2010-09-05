@@ -1,0 +1,22 @@
+<form action="{% url multistatus project.number %}" method="post">
+	<table class="sortable">
+		{% include "issues/issue/partials/table_header.html" %}
+		<tbody>
+			{% for issue in issues %}
+				{% include "issues/issue/partials/row.html" %}
+			{% endfor %}
+		</tbody>
+	</table>
+	<div class="status-tools">
+		<p class="info">
+			Endre merkede sakers status til:
+			<select name="status_id">
+				<option value="0" selected="selected">---</option>
+				{% for status in all_statuses %}
+					<option value="{{ status.id }}">{{ status.title }}</option>
+				{% endfor %}
+			</select>
+			<button type="submit">Endre</button>
+		</p>
+	</div>
+</form>

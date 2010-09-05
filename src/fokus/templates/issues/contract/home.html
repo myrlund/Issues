@@ -1,0 +1,49 @@
+{% extends "issues/base.html" %}
+
+{% block content %}
+
+	{% if my_open_issues %}
+		<article>
+			<h2><a href="#" onclick="togglehideSection(this);">Mine åpne saker</a></h2>
+			<section class="table">
+				<table class="sortable">
+					{% include "issues/issue/partials/table_header.html" %}
+					<tbody>
+						{% for issue in my_open_issues %}
+							{% include "issues/issue/partials/row.html" %}
+						{% endfor %}
+					</tbody>
+				</table>
+			</section>
+		</article>
+	{% endif %}
+
+	<article>
+		<h2><a href="#" onclick="togglehideSection(this);">Åpne saker</a></h2>
+		<section class="table">
+			<table class="sortable">
+				{% include "issues/issue/partials/table_header.html" %}
+				<tbody>
+					{% for issue in contract.get_open_issues %}
+						{% include "issues/issue/partials/row.html" %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</section>
+	</article>
+	
+	<article>
+		<h2 class="closed"><a href="#" onclick="togglehideSection(this);">Alle saker</a></h2>
+		<section class="table" style="display: none;">
+			<table>
+				{% include "issues/issue/partials/table_header.html" %}
+				<tbody>
+					{% for issue in contract.get_open_issues %}
+						{% include "issues/issue/partials/row.html" %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</section>
+	</article>
+	
+{% endblock %}

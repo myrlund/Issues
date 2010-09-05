@@ -1,0 +1,40 @@
+{% load thumbnail %}
+
+{{ formset.management_form }}
+							
+<ul class="attachmentforms">
+	{% for form in formset.forms %}
+		<li class="imageform{% if form.instance.pk %} existing{% else %} dynamic-form{% endif %}">
+			{{ form.errors }}
+			{{ form.id }}
+			<ul class="attachmentform">
+				{% if form.instance.pk %}
+					<li class="image">
+						<a href="{{ form.instance.value.url }}" rel="lightbox">
+							<img src="{{ form.instance.value.url|thumbnail:"width=50,height=50" }}" alt="" title="{{ form.instance.value.name }}" />
+						</a>
+					</li>
+				{% else %}
+					<li>
+						{{ form.value }}
+					</li>
+				{% endif %}
+				<li>
+					{% if not form.instance.pk %}
+						{{ form.description.label }}:
+					{% endif %}
+					{{ form.description }}
+				</li>
+				<li>
+					<input type="hidden" id="id_{{ formset.prefix }}-{{ forloop.counter0 }}-DELETE" name="form-{{ forloop.counter0 }}-DELETE" />
+					<a href="javascript:void(0)" onclick="deleteForm(this, '{{ formset.prefix }}', {{ forloop.counter0 }});"><img src="/static/gfx/delete.png" alt="" /></a>
+				</li>
+			</ul>
+			<div class="clearer"></div>
+		</li>
+	{% endfor %}
+	
+	<li class="imageform add">
+		<a href="javascript:void(0)" class="add" onclick="addForm(this, '{{ formset.prefix }}')">Last opp flere bilder</a>
+	</li>
+</ul>

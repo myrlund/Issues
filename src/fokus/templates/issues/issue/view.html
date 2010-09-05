@@ -1,0 +1,116 @@
+{% extends "issues/base.html" %}
+
+{% load thumbnail %}
+{% load tools %}
+{% load update %}
+
+{% block content %}
+	
+	<article>
+		<h1>Sak #{{ issue.id }}</h1>
+		<section class="note">
+			<header>
+				<h2>{{ issue.subject }}</h2>
+			</header>
+			
+			{% section "Nøkkelinformasjon" %}
+				<table class="keyinfo col2">
+					<tr>
+						<th>Type</th>
+						<td>{{ issue.type }}
+						
+						<th>Kontrakt</th>
+						<td>{{ issue.contracts_list|safeseq|join:", " }}</td>
+					</tr>
+					<tr>
+						<th>Status</th>
+						<td><a href="#" class="icon bullet {{ issue.status.color }}">{{ issue.status }}</a></td>
+						
+						<th>Prioritet</th>
+						<td>
+							<a href="javascript:void(0)" class="bullet icon priority-{{ issue.priority }}">
+								{{ issue.get_priority_display }}
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<th>Tidsfrist</th>
+						<td>{{ issue.f_deadline|date }}</td>
+						<th>Abonnenter</th>
+						<td>
+							{% if issue.subscription %}
+								<a href="{{ issue.toggle_notify_url }}" class="floatright icon small bullet {{ issue.subscription.notify|yesno:'green,red' }}" title="Klikk her for å slå {{ issue.subscription.notify|yesno:'av,på' }} varsling for denne saken">
+									Varsling er {{ issue.subscription.notify|yesno:'på,av' }}
+								</a>
+							{% endif %}
+							
+							{% if issue.subscribers.count %}
+								{{ issue.subscriber_list|safeseq|join:", " }}
+							{% else %}
+								<i>Ingen abonnenter.</i><br /><a href="{% url subscribe issue.project.number, issue.id %}">Abonnér på denne saken</a>
+							{% endif %}
+						</td>
+
+					</tr>
+				</table>
+			{% endsection %}
+			
+			{% section "Beskrivelse" %}
+				{{ issue.description|safe }}
+			{% endsection %}
+			
+			{% section "Relaterte saker" %}
+				<ul class="bulletless">
+					{% for related in issue.related.all %}
+						<li><a href="{{ related.get_absolute_url }}">{{ related }}</a><i> - {{ related.description }}</i></li>
+					{% empty %}
+						<li><i>Ingen relaterte saker.</i></li>
+					{% endfor %}
+				</ul>
+			{% endsection %}
+			
+			{% with issue.all_images|length_is:0 as closed %}
+				{% section "Vedlegg" closed %}
+					{% if issue.all_images.count %}
+						{% with issue as parent %}
+							{% with issue.all_images as images %}
+								{% include "issues/attachment/images.html" %}
+							{% endwith %}
+						{% endwith %}
+						
+						{% ifnotequal issue.all_images.count issue.images.count %}
+							<p class="info small">Vedlegg fra alle oppdateringer er inkludert.</p>
+						{% endifnotequal %}
+					{% else %}
+						<p class="info">Ingen vedlegg ennå.</p>
+					{% endif %}
+				{% endsection %}
+			{% endwith %}
+			
+			{% section "Oppdateringer" %}
+				{% if issue.updates.count %}
+					{{ issue.render_updates }}
+				{% else %}
+					<p class="info">Ingen oppdateringer.</p>
+				{% endif %}
+				
+				<h4>Ny oppdatering</h4>
+				<div class="update-form">
+					{% update_form issue as update_form %}
+					<p>
+						Legg inn en oppdatering for denne saken.
+						{% if issue.updates.count %}
+							<i>Tips: Dersom du vil svare på en annen oppdatering, klikk på <b>Svar</b>-knappen i stedet for dette feltet.</i>
+						{% endif %}
+					</p>
+					
+					{% with issue as parent %}
+						{% include "issues/update/form.html" %}
+					{% endwith %}
+				</div>
+			{% endsection %}
+			
+		</section>
+	</article>
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "issues/search/search.html" %}
+
+{% load tools %}
+
+{% block content %}
+	
+	{{ block.super }}
+	
+	{% for content_type, category in categories.items %}
+		{% article category.title "table" %}
+			{% with category.hits|first as hit %}
+				<table class="hits {{ hit.content_type }}">
+					<thead>
+						<tr>
+							<th>{{ hit.instance.modelname|title }}</th>
+							{% for field in hit.indexentryfield_set.all %}
+								<th>{{ hit.instance|verbose_name:field.field_name|title }}</th>
+							{% endfor %}
+						</tr>
+					</thead>
+					{% for hit in category.hits %}
+						<tr>
+							<td class="{{ hit.content_type }}">
+								<a href="{{ hit.instance.get_absolute_url }}">{{ hit.instance|safe }}</a>
+							</td>
+							{% for field in hit.fields %}
+								<td class="hitfield">{{ field|safe|smart_trim }}</td>
+							{% endfor %}
+						</tr>
+					{% endfor %}
+				</table>
+			{% endwith %}
+		{% endarticle %}
+	{% empty %}
+		{% article "Resultater" "note" %}
+			<div class="info">"{{ q }}" hadde ingen treff i databasen.</div>
+		{% endarticle %}
+	{% endfor %}
+
+{% endblock %}

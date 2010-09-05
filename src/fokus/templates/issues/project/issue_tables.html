@@ -1,0 +1,20 @@
+{% extends "issues/base.html" %}
+
+{% load tools %}
+
+{% block content %}
+
+	{% for category in categories %}
+		{% article category.title "table" %}
+			{% with category.issues as issues %}
+				{% include "issues/issue/partials/table.html" %}
+			{% endwith %}
+		{% endarticle %}
+	{% endfor %}
+
+{% endblock %}
+
+{% block tablesorter %}
+	, sortList: [[1,0]]
+{% endblock %}
+

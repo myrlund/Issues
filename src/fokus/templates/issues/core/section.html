@@ -1,0 +1,8 @@
+<article{% if closed %} class="closed"{% endif %}>
+	<h3 id="{{ title.lower }}">
+		<a href="#" onclick="toggleSection(this);return false;">{{ title }}</a>
+	</h3>
+	<section>
+		{{ inner }}
+	</section>
+</article>

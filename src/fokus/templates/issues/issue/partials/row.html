@@ -1,0 +1,12 @@
+<tr>
+	<td class="number"><div><input type="checkbox" name="issue-{{ issue.id }}" /></div></td>
+	<td class="number"><a href="{{ issue.get_absolute_url }}">{{ issue.id }}</a></td>
+	<td class=""><a href="{{ issue.get_absolute_url }}">{{ issue.subject }}</a></td>
+	<td class=""><a href="{{ issue.get_type_url }}">{{ issue.type }}</a></td>
+	<td class=""><a href="{{ issue.get_status_url }}">{{ issue.status }}</a></td>
+	<td class=""><a href="{{ issue.get_priority_url }}">{{ issue.get_priority_display }}</a></td>
+	<td class="">{{ issue.contracts_list|safeseq|join:", " }}</td>
+	<td class=""><div>{{ issue.pub_date|date }} {{ issue.pub_date|time }}</div></td>
+	<td class=""><div>{{ issue.f_deadline|date }}</div></td>
+	<td class="">{{ issue.subscriber_list|safeseq|join:", " }}</td>
+</tr>

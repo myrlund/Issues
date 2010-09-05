@@ -1,0 +1,24 @@
+{% extends "issues/base.html" %}
+
+{% block content %}
+
+	<article>
+		<h2><a href="#" onclick="toggleSection(this);">Kontrakter</a></h2>
+		<section class="table">
+			<table class="sortable">
+				{% include "issues/contract/partials/table_header.html" %}
+				<tbody>
+					{% for contract in contracts %}
+						{% include "issues/contract/partials/row.html" %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</section>
+	</article>
+	
+{% endblock %}
+
+{% block tablesorter %}
+	, sortList: [[0,0]]
+{% endblock %}
+

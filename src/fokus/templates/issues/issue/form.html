@@ -1,0 +1,47 @@
+{% extends "issues/base.html" %}
+
+{% load thumbnail %}
+
+{% block extra_headerssss_disabled %}
+	<link rel="stylesheet" type="text/css" href="/static/css/jquery.autocomplete.css" />
+	
+	<script type="text/javascript" src="/static/scripts/jquery.autocomplete.min.js"></script>
+	<script type="text/javascript">
+	<!--
+		
+		$(document).ready(function(){
+			$("#id_related");
+		});
+
+	// -->
+	</script>
+{% endblock %}
+
+{% block content %}
+	{% include "issues/dynamic-formsets-autoload.html" %}	
+	<article>
+		<h1>{{ action|title }} sak</h1>
+		<section class="form">
+			<form action="" method="post" enctype="multipart/form-data">
+				<table class="form">
+					{{ form.as_table }}
+					
+					<tr>
+						<td>
+							<label>Vedlegg:</label>
+						</td>
+						<td>
+							{% include "issues/attachment/form.html" %}
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<button type="submit">{{ postaction|title }} sak</button>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</section>
+	</article>
+
+{% endblock %}

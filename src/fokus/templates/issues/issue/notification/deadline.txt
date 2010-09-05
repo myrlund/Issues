@@ -1,0 +1,10 @@
+{% extends "issues/issue/notification.txt" %}
+
+{% block subject %}
+Fristen ute for sak #{{ issue.id }} {{ issue.subject }}
+{% endblock %}
+
+{% block message %}
+Saken sin tidsfrist utløp for {{ issue.deadline_overdue.days }} dag{{ issue.deadline_overdue|pluralize:'er' }} siden.
+{% endblock %}
+

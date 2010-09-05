@@ -1,0 +1,14 @@
+{% load tools %}
+
+<div class="update-wrapper">
+	{% if updates.count %}
+		<ol class="updates">
+			{% for update in updates %}
+				<li class="update">
+					{% include "issues/update/update.html" %}
+				</li>
+			{% endfor %}
+		</ol>
+	{% endif %}
+</div>
+

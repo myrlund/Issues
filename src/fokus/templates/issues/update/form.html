@@ -1,0 +1,20 @@
+{% load tools %}
+{% load attachment %}
+
+<form action="{{ parent.reply_url }}" method="post" enctype="multipart/form-data">
+	{{ update_form.content_type }}
+	{{ update_form.object_id }}
+	<div class="text">{{ update_form.text }}</div>
+	<div class="attachments">
+		<h5>Legg ved bilder</h5>
+		{% with parent.pk as prefix %}
+			{% attachment_formset prefix as formset %}
+			{% include "issues/attachment/form.html" %}
+		{% endwith %}
+	</div>
+	
+	{% if issue.notificants %}
+		<p class="info"><label>{{ update_form.notify }} {{ issue.notificants|verbosejoin }} abonnerer på denne saken. Huk av her for å gi beskjed om din oppdatering.</label></p>
+	{% endif %}
+	<button type="submit">Lagre</button>
+</form>
