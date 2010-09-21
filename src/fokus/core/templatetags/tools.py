@@ -1,10 +1,20 @@
+# -*- coding: utf8 -*-
+
 from django import template
 from django.template import loader, Node, TemplateSyntaxError, Variable
 from django.template.context import Context
+from django.template.defaultfilters import slugify as _slugify, stringfilter
 
 import re
 
 register = template.Library()
+
+def slugify(value):
+    for s, r in ASCII:
+        value = value.replace(s, r)
+    return _slugify(value)
+slugify.is_safe = True
+slugify = stringfilter(slugify)
 
 @register.filter
 def verbose_name(instance, field_name):
@@ -114,3 +124,12 @@ def split_token(token):
         raise TemplateSyntaxError, "%r tag had invalid arguments." % tag_name
     
     return m.groups()
+
+ASCII = (
+    (u'æ', 'ae'),
+    (u'Æ', 'AE'),
+    (u'ø', 'o'),
+    (u'Ø', 'O'),
+    (u'å', 'a'),
+    (u'Å', 'A'),
+)

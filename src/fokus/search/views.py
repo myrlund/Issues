@@ -6,7 +6,7 @@ from fokus.issue.helpers import render_project_response, get_project
 from fokus.search.forms import SearchForm
 from fokus.issue.helpers import project_tabs
 
-def search(request, project_number):
+def search(request, project_number, project_slug=None):
     project = get_project(project_number)
     pagetitle = u"Søk"
     

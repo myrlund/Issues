@@ -4,7 +4,7 @@ from django.forms.fields import DateTimeField, BooleanField
 from django.forms.widgets import TextInput
 from django.forms.models import ModelMultipleChoiceField, modelformset_factory
 
-from fokus.issue.models import Issue, IssueSubscription
+from fokus.issue.models import Issue, IssueSubscription, Project
 
 class RelatedIssueField(ModelMultipleChoiceField):
     def __init__(self, *args, **kwargs):
@@ -23,6 +23,10 @@ class CloseForm(ModelForm):
     @staticmethod
     def formset():
         return modelformset_factory(Issue, CloseForm, extra=0)
+
+class ProjectForm(ModelForm):
+    class Meta:
+        model = Project
 
 class IssueForm(ModelForm):
     deadline = DateTimeField(widget=TextInput(attrs={'class': 'date'}), required=False)

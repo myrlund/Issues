@@ -4,25 +4,35 @@ from datetime import datetime
 
 from django.db import models
 from django.conf import settings
-
-from fokus.core.models import BaseModel, User
-from fokus.core.models import AttachableModel
 from django.template.context import Context
 from django.template import loader
 from django.core.mail import send_mass_mail
+
+from fokus.core.models import BaseModel, User
+from fokus.core.models import AttachableModel
 from fokus.search.models import Index
+from fokus.core.templatetags.tools import slugify
 
 class Project(BaseModel):
-    number = models.PositiveIntegerField('prosjektnummer', unique=True)
     title = models.CharField('tittel', max_length=70, default="Uten navn")
+    slug = models.SlugField('slug', max_length=70, blank=True)
     
     def __unicode__(self):
         return self.title
     
     class Meta:
-        ordering = ('number',)
+        ordering = ('title', '-pub_date',)
         verbose_name = 'prosjekt'
         verbose_name_plural = 'prosjekter'
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+            i = 1
+            while Project.objects.filter(slug=self.slug).count() > 0:
+                self.slug = u"%s-%d" % (slugify(self.title), i)
+                i += 1
+        return super(Project, self).save(*args, **kwargs)
     
     @property
     def _index(self):
@@ -34,19 +44,19 @@ class Project(BaseModel):
     
     @models.permalink
     def get_new_issue_url(self):
-        return ('fokus.issue.views.issue.issue_new', (self.number,))
+        return ('fokus.issue.views.issue.issue_new', (self.id, self.slug,))
     
     @models.permalink
     def get_contracts_url(self):
-        return ('fokus.issue.views.contract.contract_list', (self.number,))
+        return ('fokus.issue.views.contract.contract_list', (self.id, self.slug,))
     
     @models.permalink
     def get_user_url(self, user):
-        return ('fokus.issue.views.list.list_by_user', (self.number, user.username))
+        return ('fokus.issue.views.list.list_by_user', (self.id, self.slug, user.username))
     
     @models.permalink
     def get_url(self, action='view'):
-        return ('fokus.issue.views.project.project_%s' % action, (self.number,))
+        return ('fokus.issue.views.project.project_%s' % action, (self.id, self.slug,))
     
     def get_absolute_url(self):
         return self.get_url("home")
@@ -144,7 +154,7 @@ class IssueType(BaseModel):
     
     @models.permalink
     def get_absolute_url(self):
-        return ('fokus.issue.views.list.list_by_type', (self.project.number, self.key,))
+        return ('fokus.issue.views.list.list_by_type', (self.project.id, self.project.slug, self.key,))
 
 
 class IssueStatus(BaseModel):
@@ -172,7 +182,7 @@ class IssueStatus(BaseModel):
     
     @models.permalink
     def get_absolute_url(self):
-        return ('fokus.issue.views.list.list_by_status', (self.project.number, self.key,))
+        return ('fokus.issue.views.list.list_by_status', (self.project.id, self.project.slug, self.key,))
 
 PRIORITIES = (
     (1, "Lav"),
@@ -267,7 +277,7 @@ class Issue(AttachableModel):
     
     @models.permalink
     def get_url(self, action="show"):
-        return ('fokus.issue.views.issue.issue_%s' % action, (self.project.number, self.id,))
+        return ('fokus.issue.views.issue.issue_%s' % action, (self.project.id, self.project.slug, self.id,))
         
     @models.permalink
     def reply_url(self):

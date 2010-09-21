@@ -1,0 +1,20 @@
+{% extends "issues/base.html" %}
+
+{% load tools %}
+
+{% block content %}
+
+	{% article verb "form" %}
+		<form action="" method="post">
+			<table class="form">
+				{{ form.as_table }}
+				<tr>
+					<td colspan="2">
+						<button type="submit">Lagre</button>
+					</td>
+				</tr>
+			</table>
+		</form>
+	{% endarticle %}
+
+{% endblock %}

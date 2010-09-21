@@ -1,4 +1,4 @@
-<form action="{% url multistatus project.number %}" method="post">
+<form action="{% url multistatus project.id,project.slug %}" method="post">
 	<table class="sortable">
 		{% include "issues/issue/partials/table_header.html" %}
 		<tbody>

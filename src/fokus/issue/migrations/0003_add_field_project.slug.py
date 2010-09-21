@@ -8,140 +8,14 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         
-        # Adding model 'Project'
-        db.create_table('issue_project', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('pub_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('mod_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=70, unique=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(default='Uten navn', max_length=70)),
-        ))
-        db.send_create_signal('issue', ['Project'])
-
-        # Adding model 'Contract'
-        db.create_table('issue_contract', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('pub_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('mod_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('project', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['issue.Project'])),
-            ('code', self.gf('django.db.models.fields.CharField')(max_length=20)),
-            ('company', self.gf('django.db.models.fields.CharField')(max_length=70, blank=True)),
-            ('closed', self.gf('django.db.models.fields.BooleanField')(default=False)),
-        ))
-        db.send_create_signal('issue', ['Contract'])
-
-        # Adding unique constraint on 'Contract', fields ['project', 'code']
-        db.create_unique('issue_contract', ['project_id', 'code'])
-
-        # Adding model 'IssueType'
-        db.create_table('issue_issuetype', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('pub_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('mod_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=20)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=35)),
-            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('weight', self.gf('django.db.models.fields.IntegerField')(default=0)),
-        ))
-        db.send_create_signal('issue', ['IssueType'])
-
-        # Adding model 'IssueStatus'
-        db.create_table('issue_issuestatus', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('pub_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('mod_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(unique=True, max_length=20)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=35)),
-            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('weight', self.gf('django.db.models.fields.IntegerField')(default=0)),
-            ('closed', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('color', self.gf('django.db.models.fields.CharField')(default='yellow', max_length=40)),
-        ))
-        db.send_create_signal('issue', ['IssueStatus'])
-
-        # Adding model 'IssueSubscriptionNotification'
-        db.create_table('issue_issuesubscriptionnotification', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('pub_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('mod_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('subscription', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['issue.IssueSubscription'])),
-        ))
-        db.send_create_signal('issue', ['IssueSubscriptionNotification'])
-
-        # Adding model 'IssueSubscription'
-        db.create_table('issue_issuesubscription', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('pub_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('mod_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('issue', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['issue.Issue'])),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('notify', self.gf('django.db.models.fields.BooleanField')(default=True)),
-        ))
-        db.send_create_signal('issue', ['IssueSubscription'])
-
-        # Adding model 'Issue'
-        db.create_table('issue_issue', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('pub_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('mod_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-            ('project', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['issue.Project'])),
-            ('subject', self.gf('django.db.models.fields.CharField')(max_length=80)),
-            ('priority', self.gf('django.db.models.fields.IntegerField')(default=2)),
-            ('deadline', self.gf('django.db.models.fields.DateField')(blank=True)),
-            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('status', self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['issue.IssueStatus'])),
-            ('type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['issue.IssueType'])),
-        ))
-        db.send_create_signal('issue', ['Issue'])
-
-        # Adding M2M table for field contracts on 'Issue'
-        db.create_table('issue_issue_contracts', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('issue', models.ForeignKey(orm['issue.issue'], null=False)),
-            ('contract', models.ForeignKey(orm['issue.contract'], null=False))
-        ))
-        db.create_unique('issue_issue_contracts', ['issue_id', 'contract_id'])
-
-        # Adding M2M table for field related on 'Issue'
-        db.create_table('issue_issue_related', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('from_issue', models.ForeignKey(orm['issue.issue'], null=False)),
-            ('to_issue', models.ForeignKey(orm['issue.issue'], null=False))
-        ))
-        db.create_unique('issue_issue_related', ['from_issue_id', 'to_issue_id'])
+        # Adding field 'Project.slug'
+        db.add_column('issue_project', 'slug', self.gf('django.db.models.fields.SlugField')(db_index=True, default='', max_length=70, blank=True), keep_default=False)
 
 
     def backwards(self, orm):
         
-        # Removing unique constraint on 'Contract', fields ['project', 'code']
-        db.delete_unique('issue_contract', ['project_id', 'code'])
-
-        # Deleting model 'Project'
-        db.delete_table('issue_project')
-
-        # Deleting model 'Contract'
-        db.delete_table('issue_contract')
-
-        # Deleting model 'IssueType'
-        db.delete_table('issue_issuetype')
-
-        # Deleting model 'IssueStatus'
-        db.delete_table('issue_issuestatus')
-
-        # Deleting model 'IssueSubscriptionNotification'
-        db.delete_table('issue_issuesubscriptionnotification')
-
-        # Deleting model 'IssueSubscription'
-        db.delete_table('issue_issuesubscription')
-
-        # Deleting model 'Issue'
-        db.delete_table('issue_issue')
-
-        # Removing M2M table for field contracts on 'Issue'
-        db.delete_table('issue_issue_contracts')
-
-        # Removing M2M table for field related on 'Issue'
-        db.delete_table('issue_issue_related')
+        # Deleting field 'Project.slug'
+        db.delete_column('issue_project', 'slug')
 
 
     models = {
@@ -271,6 +145,7 @@ class Migration(SchemaMigration):
             'mod_date': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'number': ('django.db.models.fields.PositiveIntegerField', [], {'unique': 'True'}),
             'pub_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'slug': ('django.db.models.fields.SlugField', [], {'db_index': 'True', 'max_length': '70', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'default': "'Uten navn'", 'max_length': '70'})
         },
         'update.update': {

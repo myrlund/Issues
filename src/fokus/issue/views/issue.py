@@ -14,7 +14,7 @@ from fokus.issue.helpers import tab, render_project_response, get_project,\
 from fokus.attachment.models import ImageResource
 from fokus.attachment.forms import ImageResourceForm
 
-def issue_subscribe(request, project_number, issue_id, user_id=None):
+def issue_subscribe(request, project_number, issue_id, user_id=None, project_slug=None):
     if not user_id:
         user = request.user
     else:
@@ -31,7 +31,7 @@ def issue_subscribe(request, project_number, issue_id, user_id=None):
     
     return HttpResponseRedirect(issue.get_absolute_url())
 
-def issue_unsubscribe(request, project_number, issue_id, user_id=None):
+def issue_unsubscribe(request, project_number, issue_id, user_id=None, project_slug=None):
     if not user_id:
         user = request.user
     else:
@@ -46,13 +46,13 @@ def issue_unsubscribe(request, project_number, issue_id, user_id=None):
     
     return redirect(request, issue.get_absolute_url())
 
-def issue_notify(request, project_number, issue_id, user_id=None):
+def issue_notify(request, project_number, issue_id, user_id=None, project_slug=None):
     return issue_toggle_notify(request, project_number, issue_id, user_id, True)
 
-def issue_denotify(request, project_number, issue_id, user_id=None):
+def issue_denotify(request, project_number, issue_id, user_id=None, project_slug=None):
     return issue_toggle_notify(request, project_number, issue_id, user_id, False)
 
-def issue_toggle_notify(request, project_number, issue_id, user_id=None, notify=None):
+def issue_toggle_notify(request, project_number, issue_id, user_id=None, notify=None, project_slug=None):
     if not user_id:
         user = request.user
     else:
@@ -79,7 +79,7 @@ def issue_toggle_notify(request, project_number, issue_id, user_id=None, notify=
     return redirect(request, issue.get_absolute_url())
     
 
-def issue_view(request, project_number, issue_id):
+def issue_view(request, project_number, issue_id, project_slug=None):
     issue = get_object_or_404(Issue, id=issue_id)
     tools = [
         tab('edit issue', 'Rediger sak', issue.get_edit_url()),
@@ -105,13 +105,13 @@ def issue_view(request, project_number, issue_id):
     breadcrumb = issue
     return render_project_response(request, 'issue/view.html', project_number, locals())
 
-def issue_new(request, project_number, code=None):
+def issue_new(request, project_number, code=None, project_slug=None):
     issue = Issue()
     # if code: issue.contracts.add(get_contract(project_number, code))
     issue.no_link = True
     return issue_form(request, project_number, issue, "oppretter", "opprett")
 
-def issue_edit(request, project_number, issue_id):
+def issue_edit(request, project_number, issue_id, project_slug=None):
     issue = get_object_or_404(Issue, id=issue_id)
     return issue_form(request, project_number, issue, "redigerer", "lagre")
 
@@ -142,7 +142,7 @@ def issue_form(request, project_number, issue, action, postaction):
     breadcrumb = issue
     return render_project_response(request, 'issue/form.html', project_number, locals())
 
-def issue_delete(request, project_number):
+def issue_delete(request, project_number, project_slug=None):
     if request.POST.has_key("issue_id"):
         issue = get_object_or_404(Issue, id=request.POST["issue_id"])
         issue.delete()

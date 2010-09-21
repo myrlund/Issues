@@ -58,10 +58,10 @@
 						{% endif %}
 					</div>
 						<div id="search">
-							{% if project %}<form action="{% url search project.number %}" method="get">{% endif %}
+							{% if project.pk %}<form action="{% url search project.id,project.slug %}" method="get">{% endif %}
 								<input type="search" name="q" placeholder="Søk"{% if q %} value="{{ q }}"{% endif %}{% if not project %} disabled="disabled"{% endif %} />
 								<button type="submit">Søk</button>
-							{% if project %}</form>{% endif %}
+							{% if project.pk %}</form>{% endif %}
 						</div>
 				</div>
 				<nav id="breadcrumb">

@@ -57,7 +57,7 @@ def project_tabs(project):
     tabs = [
         tab('list issues', 'Saker', project.get_absolute_url()),
         tab('list contracts', 'Kontrakter', project.get_contracts_url()),
-        tab('search', u'Søk', reverse('fokus.search.views.search', args=(project.number,))),
+        tab('search', u'Søk', reverse('fokus.search.views.search', args=(project.id, project.slug,))),
     ]
     return tabs
 
@@ -126,9 +126,7 @@ def issue_tables(request, project_number, categories=[], active_tab=None, vars={
 ##################
 
 def get_project(project_number):
-    project, created = Project.objects.get_or_create(number=project_number)
-    project.created = created
-    return project 
+    return get_object_or_404(Project, id=project_number)
 
 def get_contract(project_number, contract_code):
     return get_object_or_404(Contract, code=contract_code, project__number=project_number)

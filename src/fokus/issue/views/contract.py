@@ -2,7 +2,7 @@ from fokus.issue.helpers import get_project, project_tools, project_tabs,\
     render_project_response, get_contract, tab, render_contract_response
 
 
-def contract_list(request, project_number):
+def contract_list(request, project_number, project_slug=None):
     project = get_project(project_number)
     pagetitle = u"Kontrakter"
     
@@ -15,7 +15,7 @@ def contract_list(request, project_number):
     tabs[1]["active"] = True
     return render_project_response(request, 'contract/list.html', project_number, locals())
 
-def contract_home(request, project_number, code):
+def contract_home(request, project_number, code, project_slug=None):
     contract = get_contract(project_number, code)
     pagetitle = contract
     
