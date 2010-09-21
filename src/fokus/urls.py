@@ -13,5 +13,7 @@ urlpatterns = patterns('',
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.PATH_STATIC}),
     (r'^files/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     
+    (r'^user/', include('fokus.user.urls')),
+    
     (r'', include('fokus.urls_issues')),
 )

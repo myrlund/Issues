@@ -1,6 +1,8 @@
 # Django settings for economy project.
 
 import os
+from django.core.urlresolvers import reverse
+abspath = lambda p: os.path.join(os.path.dirname(__file__), p).replace('\\','/')
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -11,15 +13,76 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = os.path.join(os.path.dirname(__file__), 'economy.db').replace('\\','/')             # Or path to database file if using sqlite3.
-DATABASE_USER = ''             # Not used with sqlite3.
-DATABASE_PASSWORD = ''         # Not used with sqlite3.
-DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+# Host, without trailing /
+HOST = 'http://example.com'
+
+DATABASES = {
+    'default': {
+        'NAME': abspath('data.db'),
+        'ENGINE': 'sqlite3',
+        'USER': '',
+        'PASSWORD': '',
+    },
+    'resources': {
+        'NAME': abspath('resources.db'),
+        'ENGINE': 'sqlite3',
+        'USER': '',
+        'PASSWORD': '',
+    },
+}
+
+DATABASE_ROUTERS = ['fokus.attachment.routers.ResourceRouter',]
+
+ACCEPTED_SHORT = 'godkjent'
+
+INDEXABLE_MODELS = (
+    'issue.Issue',
+    'update.Update',
+    'attachment.ImageResource',
+)
+
+APP_TAG = 'Fokus'
+
+EMAIL_SUBJECT_PREFIX = '[%s] ' % APP_TAG 
+EMAIL_FROM = '%s <ikke-svar@fokusraad.no>' % APP_TAG
+
+EMAIL_HOST = ''
+EMAIL_PORT = 25
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = False
+
+# Maximum update recursion
+UPDATE_RECURSION_LIMIT = 5
+
+# Users should be automatically logged in
+AUTHENTICATION_BACKENDS = ('fokus.core.backends.CustomBackend',)
+
+# Load user profiles
+AUTH_PROFILE_MODULE = 'core.UserProfile'
+
+DATE_FORMAT = "d.m.Y"
+TIME_FORMAT = "H:i"
+
+BULLET_COLORS = (
+    'red',
+    'green',
+    'yellow',
+    'orange',
+    'pink',
+    'purple',
+    'black',
+    'blue',
+)
+
+THUMB_SIZE_SMALL = (50, 50)
+THUMB_SIZE_NORMAL = (80, 80)
+
+THUMB_SIZE_ISSUE = THUMB_SIZE_NORMAL
+THUMB_SIZE_UPDATE = THUMB_SIZE_SMALL
 
 # Path to static files
-PATH_STATIC = os.path.join(os.path.dirname(__file__), 'static').replace('\\','/')
+PATH_STATIC = abspath('static')
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -40,12 +103,12 @@ USE_I18N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = abspath('files') + "/"
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/files/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -53,28 +116,30 @@ MEDIA_URL = ''
 ADMIN_MEDIA_PREFIX = '/media/'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '8omx(clgwxf@(=reo5ra(5hjv2=(bsd!q9n=j1lesotmt)1v#z'
+SECRET_KEY = ''
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
-    'django.template.loaders.app_directories.load_template_source',
-#     'django.template.loaders.eggs.load_template_source',
+#    'django.template.loaders.app_directories.load_template_source',
+#    'django.template.loaders.eggs.load_template_source',
 )
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+
+    # 'fokus.issue.helpers.AuthMiddleware',
 )
 
-ROOT_URLCONF = 'economy.urls'
+LOGIN_URL = '/user/login/'
+LOGIN_REDIRECT_URL = '/user/'
+
+ROOT_URLCONF = 'fokus.urls'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    os.path.join(os.path.dirname(__file__), 'templates').replace('\\','/')
+    abspath('templates'),
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -90,5 +155,24 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.admin',
-    'economy.invoices',
+    
+    # Thumbnail template filter
+    'fokus.nesh.thumbnail',
+    
+    # Core models
+    'fokus.core',
+    
+    # Issue tracking
+    'fokus.issue',
+    'fokus.attachment',
+    'fokus.update',
+
+    # User handling
+    'fokus.user',
+    
+    # Searching and indexing
+    'fokus.search',
+    
+    # South database migrating tool
+    'south',
 )

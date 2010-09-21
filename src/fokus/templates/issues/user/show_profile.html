@@ -1,0 +1,60 @@
+{% extends "issues/base.html" %}
+
+{% load tools %}
+
+{% block content %}
+
+	{% article user.full_name "note" %}
+		<h3 class="first">Grunnleggende</h3>
+		<table class="user">
+			<tr>
+				<th>Fullt navn:</th>
+				<td>{{ user.full_name }}</td>
+			</tr>
+			<tr>
+				<th>E-post:</th>
+				<td>{{ user.email }}</td>
+			</tr>
+		</table>
+		
+		<h3>Brukerpreferanser</h3>
+		<table class="user">
+			<tr>
+				<th>Notifikasjonsintervall:</th>
+				<td>{{ user.get_profile.deadline_notification_interval }} timer</td>
+			</tr>
+		</table>
+		
+		<h3>Abonnementer</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Prosjekt</th>
+					<th>Saker</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% regroup user.issuesubscription_set.all by issue.project as subscriptions %} 
+				{% for project in subscriptions %}
+					<tr>
+						<th rowspan="{{ project.list|length }}">
+							<a href="{{ project.grouper.get_absolute_url }}">
+								{{ project.grouper }}
+							</a>
+						</td>
+						{% for subscription in project.list %}
+							{% if not forloop.first %}<tr>{% endif %}
+								<td>
+									<a href="{{ subscription.issue.get_absolute_url }}">
+										{{ subscription.issue }}
+									</a>
+								</td>
+							{% if not forloop.first %}</tr>{% endif %}
+						{% endfor %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% endarticle %}
+
+{% endblock %}

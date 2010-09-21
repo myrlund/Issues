@@ -53,7 +53,9 @@
 				-->
 				<div id="topright">
 					<div id="userbox">
-						Logget inn som {{ user }}.
+						{% if user.is_authenticated %}
+							Logget inn som <a href="{% url show_profile %}">{{ user }}</a>. <a href="{% url logout %}?next={{ request.path }}">Logg ut</a>
+						{% endif %}
 					</div>
 						<div id="search">
 							{% if project %}<form action="{% url search project.number %}" method="get">{% endif %}

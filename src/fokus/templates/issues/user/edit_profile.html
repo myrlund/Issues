@@ -1,0 +1,20 @@
+{% extends "issues/base.html" %}
+
+{% load tools %}
+
+{% block content %}
+
+	{% article "Rediger profil" "box" %}
+		<form action="" method="post">
+			{% csrf_token %}
+			<ul>
+				{{ form.as_ul }}
+				
+				<li>
+					<button type="submit">Oppdater profil</button>
+				</li>
+			</ul>
+		</form>
+	{% endarticle %}
+
+{% endblock %}

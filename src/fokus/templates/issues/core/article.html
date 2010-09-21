@@ -1,5 +1,9 @@
-<article{% if closed %} class="closed" {% endif %}>
-	<h2><a href="#" onclick="toggleSection(this);return false;">{{ title }}</a></h2>
+<article{% if type != "box" and closed %} class="closed" {% endif %}>
+	<h2>
+		{% if type != "box" %}<a href="#" onclick="toggleSection(this);return false;">{% endif %}
+			{{ title }}
+		{% if type != "box" %}</a>{% endif %}
+	</h2>
 	<section class="{{ type }}">
 		{{ inner }}
 	</section>

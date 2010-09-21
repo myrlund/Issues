@@ -34,19 +34,19 @@ class Project(BaseModel):
     
     @models.permalink
     def get_new_issue_url(self):
-        return ('fokus.issue.views.issue_new', (self.number,))
+        return ('fokus.issue.views.issue.issue_new', (self.number,))
     
     @models.permalink
     def get_contracts_url(self):
-        return ('fokus.issue.views.contract_list', (self.number,))
+        return ('fokus.issue.views.contract.contract_list', (self.number,))
     
     @models.permalink
     def get_user_url(self, user):
-        return ('fokus.issue.views.list_by_user', (self.number, user.username))
+        return ('fokus.issue.views.list.list_by_user', (self.number, user.username))
     
     @models.permalink
     def get_url(self, action='view'):
-        return ('fokus.issue.views.project_%s' % action, (self.number,))
+        return ('fokus.issue.views.project.project_%s' % action, (self.number,))
     
     def get_absolute_url(self):
         return self.get_url("home")
@@ -98,11 +98,11 @@ class Contract(BaseModel):
     
     @models.permalink
     def get_url(self, action=None):
-        return ('fokus.issue.views.contract_%s' % action, (self.project.number, self.code,))
+        return ('fokus.issue.views.contract.contract_%s' % action, (self.project.number, self.code,))
     
     @models.permalink
     def get_new_issue_url(self):
-        return ('fokus.issue.views.issue_new', (self.project.number, self.code,))
+        return ('fokus.issue.views.issue.issue_new', (self.project.number, self.code,))
     
     def get_my_issues_url(self, user):
         #TODO: Implementer
@@ -144,7 +144,7 @@ class IssueType(BaseModel):
     
     @models.permalink
     def get_absolute_url(self):
-        return ('fokus.issue.views.list_by_type', (self.project.number, self.key,))
+        return ('fokus.issue.views.list.list_by_type', (self.project.number, self.key,))
 
 
 class IssueStatus(BaseModel):
@@ -172,7 +172,7 @@ class IssueStatus(BaseModel):
     
     @models.permalink
     def get_absolute_url(self):
-        return ('fokus.issue.views.list_by_status', (self.project.number, self.key,))
+        return ('fokus.issue.views.list.list_by_status', (self.project.number, self.key,))
 
 PRIORITIES = (
     (1, "Lav"),
@@ -267,7 +267,7 @@ class Issue(AttachableModel):
     
     @models.permalink
     def get_url(self, action="show"):
-        return ('fokus.issue.views.issue_%s' % action, (self.project.number, self.id,))
+        return ('fokus.issue.views.issue.issue_%s' % action, (self.project.number, self.id,))
         
     @models.permalink
     def reply_url(self):
@@ -275,12 +275,11 @@ class Issue(AttachableModel):
     
     @models.permalink
     def close_multiple_url(self):
-        return ('fokus.issue.views.issues_close', (self.project.number,))
+        return ('fokus.issue.views.issue.issues_close', (self.project.number,))
     
     @models.permalink
     def get_list(self, by):
-        print "Trying to get list url for %s keyed %s" % (by, self.__getattribute__(by).key)
-        return ('fokus.issue.views.list_by_%s' % by, (self.project.number, self.__getattribute__(by).key))
+        return ('fokus.issue.views.list.list_by_%s' % by, (self.project.number, self.__getattribute__(by).key))
     
     def toggle_notify_url(self):
         return self.get_url("toggle_notify")

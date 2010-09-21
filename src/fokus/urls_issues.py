@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import * #@UnusedWildImport
 
-urlpatterns = patterns('fokus.issue.views',
+urlpatterns = patterns('fokus.issue.views.project',
     (r'^edit/(?P<project_number>\d+)/', 'project_edit'),
     (r'^(?P<project_number>\d+)/', include('fokus.issue.urls')),
     

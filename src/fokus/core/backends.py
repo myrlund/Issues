@@ -1,4 +1,13 @@
+from django.contrib.auth.backends import ModelBackend
+
 from fokus.issue.models import User
+
+class CustomBackend(ModelBackend):
+    def get_user(self, user_id):
+        try:
+            return User.objects.get(pk=user_id)
+        except User.DoesNotExist: #@UndefinedVariable
+            return None
 
 class AutomaticBackend:
     

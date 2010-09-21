@@ -13,7 +13,10 @@ class User(DjangoUser):
         return self.full_name()
     
     def full_name(self):
-        return self.username.title()
+        if self.first_name and self.last_name:
+            return u"%s %s" % (self.first_name, self.last_name)
+        else:
+            return self.username.title()
     
     @property
     def notification_interval(self):

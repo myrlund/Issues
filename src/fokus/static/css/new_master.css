@@ -19,6 +19,15 @@ a img {
 	border: none;
 }
 
+.cancel {
+	color: #555;
+	font-size: .8em;
+	text-decoration: none;
+}
+.error {
+	color: #900;
+}
+
 h1, h2, h3, h4 {
 	color: #049;
 }
@@ -55,6 +64,18 @@ article.closed section {
 	font-style: italic;
 }
 
+table {
+	border-collapse: collapse;
+}
+	table td,
+	table th {
+		border: 1px solid #999;
+		text-align: left;
+	}
+	table.user td,
+	table.user th {
+		border: none;
+	}
 
 .pagesection {	
 	padding: 0 15px;
@@ -230,6 +251,12 @@ article.closed section {
 			padding-top: .8em;
 			padding-bottom: .8em;
 		}
+			#content section.note h1.first,
+			#content section.note h2.first,
+			#content section.note h3.first {
+				border: none;
+				padding: 0;
+			}
 		#content section.note section {
 			padding: 0 1em;
 		}
@@ -248,7 +275,31 @@ article.closed section {
 					border: none;
 					text-align: left;
 				}
-		
+	
+	#content section.box {}
+		#content section.box form ul,
+		#content section.box form li {
+			list-style-type: none;
+			padding: 0;
+			margin: 0;
+		}
+			#content section.box form li {
+				margin: 0 0 1em;
+			}
+				#content section.box form li label {
+					display: block;
+					margin: 0 0 .2em;
+					font-size: .9em;
+				}
+				#content section.box form li input,
+				#content section.box form li textarea {
+					margin: 0;
+					padding: .5em;
+					border: 1px solid #777;
+				}
+				#content section.box form li button {
+					margin-right: .5em;
+				}
 
 	#content .filtertoggle {
 		float: right;

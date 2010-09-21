@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from fokus.issue.helpers import render_project_response, get_project
 from fokus.search.forms import SearchForm
-from fokus.issue.views import project_tabs
+from fokus.issue.helpers import project_tabs
 
 def search(request, project_number):
     project = get_project(project_number)
